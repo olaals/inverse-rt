@@ -1,0 +1,50 @@
+<html>
+
+<head>
+  <title>ThreeJS inverse render frontend</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+
+  #container {
+    position: relative;
+  }
+
+  #container canvas,
+  #overlay {
+    position: absolute;
+  }
+
+  canvas {
+    border: 1px solid black;
+  }
+</style>
+
+
+<body>
+
+  <div id="container">
+    <canvas></canvas>
+    <div id="overlay">This div is over the canvas</div>
+  </div>
+
+  <div id="container-threejs"></div>
+
+
+
+
+
+  <body>
+    <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/stats.min.js"></script> "
+    <script src="main.js"></script>
+  </body>
+
+</html>
