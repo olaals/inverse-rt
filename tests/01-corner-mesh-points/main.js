@@ -19,7 +19,9 @@ function init() {
   container.appendChild(renderer.domElement);
 
   camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 10000);
-  camera.position.z = 20;
+  camera.up.set(0, 0, 1);
+  camera.position.z = 100;
+  camera.position.y = 100;
 
   const axesHelper = new THREE.AxesHelper(5);
   scene.add(axesHelper);
@@ -27,37 +29,28 @@ function init() {
   controls = new THREE.OrbitControls(camera, renderer.domElement);
   controls.addEventListener('change', render);
 
-  // world
-  let baseGeometry = new THREE.SphereBufferGeometry(1, 12, 12);
-  let spheres = [];
-  let colors = [0xfafafa, 0xff0000];
-  for (let i = 0; i < 7000; i++) {
-    let geometry = baseGeometry.clone();
-    spheres.push(geometry)
+
+  var geometry = new THREE.SphereGeometry(0.1, 32, 32);
+  var material = new THREE.MeshBasicMaterial({ color: 0xbbbbcc });
+
+
+
+
+  //for loop
+  for (var i = 0; i < 10000; i++) {
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.position.x = (Math.random() - 0.5) * 100;
+    mesh.position.y = (Math.random() - 0.5) * 100;
+    mesh.position.z = 0
+    if (mesh.position.y < 0) {
+      mesh.position.z = -mesh.position.y
+      mesh.position.y = 0
+    }
+    mesh.updateMatrix();
+    mesh.matrixAutoUpdate = false;
+    scene.add(mesh);
   }
-  //let material = new THREE.MeshBasicMaterial();
-  var material = new THREE.MeshLambertMaterial({ color: 0xFF0000, shading: THREE.FlatShading });
-  var mergedSphereGeometries = THREE.BufferGeometryUtils.mergeBufferGeometries(spheres);
-  let mesh = new THREE.Mesh(mergedSphereGeometries, material);
-  scene.add(mesh);
-
-  //cube geometry in three.js
-  //var geometry = new THREE.SphereGeometry(0.05, 32, 32);
-
-
-  //// add cube threejs
-
-  ////for loop
-  //for (var i = 0; i < 10000; i++) {
-  //var mesh = new THREE.Mesh(geometry, material);
-  //mesh.position.x = (Math.random() - 0.5) * 100;
-  //mesh.position.y = (Math.random() - 0.5) * 100;
-  //mesh.position.z = 0
-  //mesh.updateMatrix();
-  //mesh.matrixAutoUpdate = false;
-  //scene.add(mesh);
-  //}
-  ////add cube to scene
+  //add cube to scene
 
 
 
