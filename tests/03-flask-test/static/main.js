@@ -42,7 +42,48 @@ var cross;
 
 // Update the current slider value (each time you drag the slider handle)
 
+class SelectHandler {
+  constructor(scene, camera, renderer, container) {
+    this.camera = camera;
+    this.scene = scene;
+    this.renderer = renderer;
+    this.selected = null;
+    this.selected_old_mat = null;
+    this.raycaster = new THREE.Raycaster(); // create once
+    this.mouse = new THREE.Vector2(); // create once
+    var that = this;
+    container.addEventListener('click', function (event) {
+      that.on_click(event)
+    }, false);
+  }
 
+  on_click(event) {
+    this.mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
+    this.mouse.y = - (event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
+    this.raycaster.setFromCamera(this.mouse, this.camera);
+    var intersects = this.raycaster.intersectObjects(this.scene.children);
+    if (intersects.length > 0) {
+      this.select(intersects[0].object);
+    }
+  }
+
+  select(selected) {
+    this.unselect();
+    this.selected = selected;
+    this.selected_old_mat = selected.material;
+    this.selected.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    render();
+  }
+
+  unselect() {
+    if (this.selected != null) {
+      this.selected.material = this.selected_old_mat;
+      this.selected = null;
+      this.selected_old_mat = null;
+    }
+  }
+
+}
 
 class MeshHandler {
   constructor(scene) {
@@ -132,10 +173,10 @@ init();
 animate();
 
 function init() {
-
   scene = new THREE.Scene();
   renderer = new THREE.WebGLRenderer({ antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
+
 
   container = document.getElementById('container-threejs');
   container.appendChild(renderer.domElement);
@@ -152,32 +193,13 @@ function init() {
   controls.addEventListener('change', render);
 
   mh = new MeshHandler(scene);
+  ch = new SelectHandler(scene, camera, renderer, container);
   init_callbacks(mh);
-
-
-  //add cube to scene
-
 
 
   light = new THREE.AmbientLight(0xffffff);
   scene.add(light);
 
-  const line_material = new THREE.LineBasicMaterial({
-    color: 0x0000ff
-  });
-
-  const points = [];
-  points.push(new THREE.Vector3(- 10, 0, 0));
-  points.push(new THREE.Vector3(0, 10, 0));
-  points.push(new THREE.Vector3(10, 0, 0));
-
-  const line_geometry = new THREE.BufferGeometry().setFromPoints(points);
-
-  const line = new THREE.Line(line_geometry, line_material);
-  scene.add(line);
-
-
-  // renderer
 
   window.addEventListener('resize', onWindowResize, false);
 
