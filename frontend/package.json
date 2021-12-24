@@ -1,0 +1,19 @@
+{
+  "name": "fetch-api",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^2.7.0"
+  },
+  "dependencies": {
+    "bootstrap": "^5.1.3",
+    "node-fetch": "^3.1.0",
+    "popper": "^1.0.1",
+    "three": "^0.135.0",
+    "yaot": "^1.1.3"
+  }
+}
