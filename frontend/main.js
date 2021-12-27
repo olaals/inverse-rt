@@ -1,11 +1,15 @@
 import './style.css'
 
 import { SceneManager } from './js/sceneManager'
+import { initSidebar } from './js/sidebarHandler'
 
-let canvas = document.getElementById('canvas')
-let content = document.getElementById('content-id')
+let canvas = document.getElementById('canvas');
+let content = document.getElementById('content-id');
 
-let sceneManager = new SceneManager(canvas, content)
+let sceneManager = new SceneManager(canvas, content);
+
+initSidebar();
+
 
 
 

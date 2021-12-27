@@ -20,7 +20,7 @@ export class SceneManager {
     this.clickHandler = new ClickHandler(canvas, this.scene, this.camera)
     this.controls = this.createControls(this.camera, this.renderer)
     //this.points = this.createPointCloud()
-    this.loadObj('/get_obj')
+    //this.loadObj('/get_obj')
   }
 
 

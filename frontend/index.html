@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/svg+xml" href="svgs/favicon.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flask API testing</title>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -11,39 +11,79 @@
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark text-white" style="height:10vh">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-darker text-white" style="height:10vh">
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"><img src="favicon.svg" width=45 height=45></a>
+      <a class="navbar-brand" href="#"><img src="svgs/favicon.svg" width=45 height=45></a>
     </div>
     <div id="stats"></div>
 
   </nav>
 
   <div class="wrapper">
-    <div class="sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark">
-      <div class="row std-row">
-        <a>
-          <button type="button" id="fetch-btn" class="btn btn-primary">Fetch</button>
-        </a>
+    <div class="bg-darker" id="icon-column">
+      <div class="icon-button active" data-target-tab="sidebar1">
+        <img class="icon" src="svgs/cone-svgrepo-com.svg">
       </div>
-      <div class="row std-row">
-        <a>
-          <button type="button" id="resize-btn" class="btn btn-primary">Resize</button>
-        </a>
+      <div class="icon-button" data-target-tab="sidebar2">
+        <img class="icon" src="svgs/dashboard-svgrepo-com.svg">
       </div>
-      <div class="row std-row">
-        <a class="align-right">
-          <button type="button" id="post-btn" class="btn btn-primary">Post</button>
-        </a>
+      <div class="icon-button" data-target-tab="sidebar3">
+        <img class="icon" src="svgs/device-camera-svgrepo-com.svg">
       </div>
-      <div class="row std-row">
-        <a class="align-right">
-          <button type="button" id="text-btn" class="btn btn-primary">Get text</button>
-        </a>
+    </div>
+
+    <div>
+      <div class="text-white oa-dark container sidebar active" data-tab-content id="sidebar1">
+        <p class="sidebar-header">Project settings</p>
+        <div class="sidebar-row">
+          <p class="sidebar-left">Selected project</p>
+          <select class="sidebar-right sidebar-dropdown text-white" id="project-select">
+            <option value="" disabled selected hidden>select project</option>
+          </select>
+        </div>
       </div>
-      <div class="row std-row">
-        <input type="file">
+
+
+      <div class="text-white oa-dark container sidebar" data-tab-content id="sidebar2">
+        <p class="sidebar-header">Sidebar2</p>
+        <div class="sidebar-row">
+          <p class="sidebar-left">left</p>
+          <select class="sidebar-right sidebar-dropdown text-white">
+            <option value="" disabled selected hidden>project</option>
+            <option>dfsddsdfsdfsddfsdfff</option>
+            <option>2</option>
+          </select>
+        </div>
       </div>
+
+
+      <div class="text-white oa-dark container sidebar" data-tab-content id="sidebar3">
+        <p class="sidebar-header">Sidebar3</p>
+        <div class="row std-row">
+          <a>
+            <button type="button" id="fetch-btn" class="btn btn-primary">Fetch</button>
+          </a>
+        </div>
+        <div class="row std-row">
+          <a>
+            <button type="button" id="resize-btn" class="btn btn-primary">Resize</button>
+          </a>
+        </div>
+        <div class="row std-row">
+          <a class="align-right">
+            <button type="button" id="post-btn" class="btn btn-primary">Post</button>
+          </a>
+        </div>
+        <div class="row std-row">
+          <a class="align-right">
+            <button type="button" id="text-btn" class="btn btn-primary">Get text</button>
+          </a>
+        </div>
+        <div class="row std-row">
+          <input type="file">
+        </div>
+      </div>
+
     </div>
 
     <div class="content" id="content-id">

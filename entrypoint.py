@@ -2,9 +2,16 @@ from flask import Flask, request, jsonify, render_template, send_from_directory
 import random
 from PIL import Image
 import numpy as np
+import os
+from backend.project_manager import ProjectManager
+
+
 
 # create flask app
 app = Flask(__name__, static_folder='frontend/dist/assets', template_folder='frontend/dist')
+project_manager = ProjectManager("backend/scan-projects")
+print("started flask app")
+
 # create standard route
 @app.route('/')
 def index():
@@ -18,6 +25,32 @@ def get_data():
 
     # return json response
     return jsonify(response)
+
+@app.route('/get_projects', methods=['GET'])
+def get_projects():
+    path = "backend/scan-projects"
+    projects = os.listdir(path)
+    projects.sort()
+    response = {"projects": projects}
+    return jsonify(response)
+
+@app.route('/set_project', methods=['POST'])
+def select_project():
+    project_name = request.json["project"]
+    project_manager.set_project(project_name)
+    return jsonify({"status": "ok"})
+
+    
+
+
+@app.route('/get_mesh', methods=['GET'])
+def get_mesh():
+    # get mesh name argument from GET request
+    project_name = request.args.get('project')
+    path = os.path.join("backend/scan-projects", project_name, "object.obj")
+    return send_from_directory('./', path, as_attachment=True)
+
+
 
 @app.route('/post_data', methods=['Post'])
 def post_data():

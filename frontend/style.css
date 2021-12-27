@@ -7,6 +7,14 @@
   margin-top: 60px;
 }
 
+.oa-dark{
+  background-color: #434343;
+}
+
+.bg-darker{
+  background-color: #232323;
+}
+
 
 .wrapper {
   display: flex;
@@ -24,7 +32,7 @@
   height: 90vh;
   width: 100%;
   order:2;
-  background-color: aquamarine;
+  background-color: #333333;
 }
 
 .std-row{
@@ -36,4 +44,91 @@
 }
 .align-right{
   justify-content: right;
+}
+
+.icon{
+  margin:auto;
+  height:70%;
+  width:70%;
+}
+
+.icon-button{
+  background-color: #333333;
+  display:flex;
+  justify-content: center;
+  height: 45px;
+  width: 45px;
+  border: none;
+  outline: none;
+  margin-bottom: 8px;
+  margin-left: 8px;
+  border-radius: 20px 20px 20px 20px;
+}
+
+[data-tab-content]{
+  display:none
+}
+
+.active[data-tab-content]{
+  display:block
+}
+
+
+#icon-column div:hover{
+  background-color: darkorange;
+}
+
+#icon-column div.active{
+  border-radius: 15px 0px 0px 15px;
+  background-color: #434343;
+}
+
+.sidebar-header{
+  display:flex;
+  justify-content: center;
+  padding-top:8px;
+  padding-bottom:8px;
+}
+
+.sidebar-row{
+  display:flex;
+  padding-top:8px;
+  padding-bottom:8px;
+}
+
+
+.sidebar-left{
+  display:flex;
+  flex:50%;
+  justify-content:right;
+  margin:auto;
+  padding-right:8px
+}
+
+.sidebar-right{
+  display:flex;
+  flex:50%;
+  justify-content:left;
+  margin:auto;
+  padding-left:8px
+}
+
+.sidebar-dropdown{
+  background-color: #333333;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  white-space: nowrap; /* Don't forget this one */
+  text-overflow: ellipsis;
+}
+
+select {
+  width:100px; 
+  overflow:hidden; 
+  white-space:nowrap; 
+  text-overflow:ellipsis;
+}
+
+select:focus{
+      outline:none;
 }
