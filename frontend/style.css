@@ -91,9 +91,10 @@
 }
 
 .sidebar-row{
+  font-size: 12px;
   display:flex;
-  padding-top:8px;
-  padding-bottom:8px;
+  padding-top:5px;
+  padding-bottom:5px;
 }
 
 
@@ -132,3 +133,39 @@ select {
 select:focus{
       outline:none;
 }
+
+.leftright-button{
+  width:10px;
+  height:20px;
+  background-color: #232323;
+  color: #dddddd;
+  text-align: center;
+  display:flex;
+  justify-content: center;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+.leftright-button:hover{
+  background-color: orange;
+}
+
+.leftright-button-img{
+  width:80%;
+  margin:auto;
+  height:80%;
+}
+
+.sidebar-number-input{
+  width:30%;
+  height:20px;
+  background-color: #232323;
+  color: #dddddd;
+  text-align: center;
+  display:flex;
+  justify-content: center;
+  margin-left: 1px;
+  margin-right: 1px;
+}
+
+

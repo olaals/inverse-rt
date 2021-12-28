@@ -3,11 +3,12 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { ClickHandler } from './clickHandler';
-import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { MeshModule } from './meshModule'
 
 
 export class SceneManager {
-  constructor(canvas, content) {
+  constructor(canvas, content, pubsub) {
+    this.pubsub = pubsub
     this.canvas = canvas
     this.content = content
     const width = content.clientWidth
@@ -17,46 +18,31 @@ export class SceneManager {
     this.scene = this.createScene()
     this.renderer = this.createRenderer(canvas, content)
     this.camera = this.createCamera(width, height)
-    this.clickHandler = new ClickHandler(canvas, this.scene, this.camera)
+    this.clickHandler = new ClickHandler(canvas, this.scene, this.camera, pubsub)
     this.controls = this.createControls(this.camera, this.renderer)
+    this.initLights()
+    this.initSceneModules(this.scene, pubsub)
+
     //this.points = this.createPointCloud()
     //this.loadObj('/get_obj')
   }
 
-
-  loadObj(url) {
-
-    let that = this
-    const loader = new OBJLoader();
-    loader.load(url, (obj) => {
-      // create phong material
-      const material = new THREE.MeshPhongMaterial({
-        color: 0xaaaaaa,
-        specular: 0xccccaa,
-        shininess: 2,
-        flatShading: true
-      });
-      // add material to object
-      obj.traverse(function (child) {
-        if (child instanceof THREE.Mesh) {
-          child.material = material
-        }
-      })
-
-      // add 3 point lights to scene
-      const light = new THREE.PointLight(0xffffff, 1, 10);
-      light.position.set(5, 5, 5);
-      this.scene.add(light);
-      const light2 = new THREE.PointLight(0xffffff, 1, 10);
-      light2.position.set(5, -5, 5);
-      this.scene.add(light2);
-
-
-
-      that.scene.add(obj)
-    }
-    )
+  initSceneModules(scene, pubsub) {
+    this.meshModule = new MeshModule(scene, pubsub)
   }
+
+  initLights() {
+    // add 3 point lights to scene
+    const light = new THREE.PointLight(0xffffff, 1, 30);
+    light.position.set(5, 5, 5);
+    this.scene.add(light);
+    const light2 = new THREE.PointLight(0xffffff, 1, 30);
+    light2.position.set(5, -5, 5);
+    this.scene.add(light2);
+
+  }
+
+
 
   createStats() {
     const statsEl = document.getElementById('stats');
@@ -73,7 +59,6 @@ export class SceneManager {
       statsAll[i].style.height = '80px'
     }
     */
-
     statsEl.appendChild(stats.domElement);
     return stats
 
@@ -140,17 +125,6 @@ export class SceneManager {
     //add axeshelper
     var axesHelper = new THREE.AxesHelper(1);
     scene.add(axesHelper);
-    let light = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(light);
-
-
-    // add cube to scene
-    var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2)
-    var material = new THREE.MeshBasicMaterial({ color: 0xff0000 })
-    var cube = new THREE.Mesh(geometry, material)
-    cube.position.set(0, 0, 0)
-    this.cube = cube
-    scene.add(cube)
 
     return scene
   }
@@ -175,7 +149,7 @@ export class SceneManager {
     var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000)
     this.scene.add(camera)
     camera.up.set(0, 0, 1)
-    camera.position.set(20, 20, 20)
+    camera.position.set(5, 5, 5)
     camera.lookAt(this.scene.position)
     return camera
   }

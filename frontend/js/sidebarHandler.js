@@ -1,8 +1,9 @@
 
-export function initSidebar() {
+export function initSidebar(pubsub) {
   initTabsCallbacks()
-  initProjectSelectCallback()
+  initProjectSelectCallback(pubsub)
   fetchProjects()
+  showHideMeshCallback(pubsub)
 }
 
 function initTabsCallbacks() {
@@ -49,14 +50,22 @@ async function setActiveProject(project) {
   console.log(json)
 }
 
-function initProjectSelectCallback() {
+function initProjectSelectCallback(pubsub) {
   let projectSelect = document.getElementById("project-select")
   console.log(projectSelect)
   projectSelect.addEventListener('change', (evt) => {
     let name = evt.target.value
-    console.log(name)
+    console.log("dropdown evt listener:", name)
     initProject(evt)
     setActiveProject(name)
+    pubsub.publish('selected_project', name)
+  })
+}
+
+function showHideMeshCallback(pubsub) {
+  document.getElementById('show-mesh-checkbox').addEventListener('change', (evt) => {
+    let checked = evt.target.checked
+    pubsub.publish("show_hide_mesh", checked)
   })
 }
 

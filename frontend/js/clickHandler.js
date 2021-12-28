@@ -4,7 +4,8 @@ import * as THREE from 'three';
 
 
 export class ClickHandler {
-  constructor(canvas, scene, camera) {
+  constructor(canvas, scene, camera, pubsub) {
+    this.pubsub = pubsub
     this.scene = scene
     this.canvas = canvas
     this.camera = camera

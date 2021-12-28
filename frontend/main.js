@@ -2,18 +2,17 @@ import './style.css'
 
 import { SceneManager } from './js/sceneManager'
 import { initSidebar } from './js/sidebarHandler'
+import PubSub from 'PubSub';
 
 let canvas = document.getElementById('canvas');
 let content = document.getElementById('content-id');
 
-let sceneManager = new SceneManager(canvas, content);
-
-initSidebar();
+const pubsub = new PubSub();
 
 
+let sceneManager = new SceneManager(canvas, content, pubsub);
 
-
-
+initSidebar(pubsub);
 
 document.getElementById('fetch-btn').addEventListener('click', () => {
   fetch('/get_data')
