@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { ClickHandler } from './clickHandler';
 import { MeshModule } from './meshModule'
+import { PointcloudModule } from './pointcloudModule'
 
 
 export class SceneManager {
@@ -29,6 +30,7 @@ export class SceneManager {
 
   initSceneModules(scene, pubsub) {
     this.meshModule = new MeshModule(scene, pubsub)
+    this.pointcloudModule = new PointcloudModule(scene, pubsub)
   }
 
   initLights() {

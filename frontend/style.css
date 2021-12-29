@@ -93,6 +93,7 @@
 .sidebar-row{
   font-size: 12px;
   display:flex;
+  justify-content: center;
   padding-top:5px;
   padding-bottom:5px;
 }
@@ -168,4 +169,15 @@ select:focus{
   margin-right: 1px;
 }
 
+.sidebar-button{
+  width:80%;
+  height:20px;
+  background-color: #3a3a3a;
+  color: #dddddd;
+  text-align: center;
+  display:flex;
+  justify-content: center;
+  margin-left: 1px;
+  margin-right: 1px;
+}
 

@@ -4,7 +4,7 @@ from PIL import Image
 import numpy as np
 import os
 from backend.project_manager import ProjectManager
-
+from backend.create_pc import project_scans
 
 
 # create flask app
@@ -39,6 +39,16 @@ def select_project():
     project_name = request.json["project"]
     project_manager.set_project(project_name)
     return jsonify({"status": "ok"})
+
+@app.route('/get_pointcloud', methods=['GET'])
+def get_pointcloud():
+    # get project argued in request from GET
+    project_name = request.args.get("project")
+    print("project:", project_name)
+    project_dir = os.path.join("backend/scan-projects", project_name)
+    pointcloud = project_scans(project_dir)
+    response = {"pointcloud": pointcloud}
+    return jsonify(response)
 
     
 

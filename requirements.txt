@@ -1,0 +1,4 @@
+flask
+numba
+pillow
+numpy

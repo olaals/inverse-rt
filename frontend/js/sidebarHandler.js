@@ -4,6 +4,7 @@ export function initSidebar(pubsub) {
   initProjectSelectCallback(pubsub)
   fetchProjects()
   showHideMeshCallback(pubsub)
+  fetchPointcloud(pubsub)
 }
 
 function initTabsCallbacks() {
@@ -62,11 +63,36 @@ function initProjectSelectCallback(pubsub) {
   })
 }
 
+function getActiveProject() {
+  let projectSelect = document.getElementById("project-select")
+  console.log(projectSelect)
+  let projectName = projectSelect.options[projectSelect.selectedIndex].value
+  return projectName
+}
+
+
 function showHideMeshCallback(pubsub) {
   document.getElementById('show-mesh-checkbox').addEventListener('change', (evt) => {
     let checked = evt.target.checked
     pubsub.publish("show_hide_mesh", checked)
   })
+}
+
+function fetchPointcloud(pubsub) {
+  console.log("fetchPointcloud")
+  document.getElementById("import-pointcloud-button").addEventListener('click', async () => {
+    console.log("import-pointcloud-button")
+    // fetch pointcloud with get_pointcloud
+    let projectName = getActiveProject()
+    console.log(projectName)
+    let url = `/get_pointcloud?project=${projectName}`
+    let response = await fetch(url)
+    let json = await response.json()
+    let points = json.pointcloud
+    pubsub.publish("pointcloud", points)
+    console.log(points)
+  })
+
 }
 
 function initProject(projectName) {
