@@ -1,0 +1,41 @@
+
+body{
+  background-color: black;
+  margin:0;
+}
+
+.sidebar-content-flex{
+  display: flex;
+  width: 100%;
+  background-color: violet;
+}
+
+.sidebarSelect{
+  order:2;
+  width: 50px;
+  height: 100vh;
+  background-color: yellowgreen;
+}
+
+.sidebar{
+  order:1;
+  background-color: #666666;
+  height: 100vh; 
+  width: 300px;
+}
+
+.threeContainer{
+  flex:1;
+  order:3;
+  background-color: black;
+  height: 100vh;
+  width:100%;
+  overflow: hidden;
+}
+
+.threeCanvas{
+  overflow: hidden;
+  display: block;
+  width:100%;
+
+}
