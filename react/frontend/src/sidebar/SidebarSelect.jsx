@@ -3,21 +3,28 @@ import { IoIosApps } from "react-icons/io";
 import { FaWrench } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import "./css/icons.css"
+import { useDispatch, useSelector } from 'react-redux'
+import { selectSidebar } from '../features/sidebarSelectSlice'
 
 const SidebarSelect = () => {
-    const logClick = () => {
-        console.log("Clicked!");
+    const dispatch = useDispatch()
+    const sidebar = useSelector(state => state.selectedSidebar.value)
+
+    const getClassnames = (value) => {
+        const classNames = "icon-div" + " " + (sidebar == value ? "sidebarIconSelected" : "")
+        return classNames
     }
+
     return (
 
         <div className="sidebarSelect">
-            <div className="icon-div" onClick={logClick}>
+            <div className={getClassnames(0)} onClick={() => { dispatch(selectSidebar(0)) }}>
                 <IoIosApps className="icon-sidebar-select" />
             </div>
-            <div className="icon-div">
+            <div className={getClassnames(1)} onClick={() => { dispatch(selectSidebar(1)) }}>
                 <FaWrench className="icon-sidebar-select" />
             </div>
-            <div className="icon-div">
+            <div className={getClassnames(2)} onClick={() => { dispatch(selectSidebar(2)) }}>
                 <GiMagnifyingGlass className="icon-sidebar-select" />
             </div>
 

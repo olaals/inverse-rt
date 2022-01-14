@@ -1,0 +1,58 @@
+
+.sidebarRow{
+    display:flex;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+
+}
+
+.sidebarLeft{
+    flex:50%;
+    height: 25px;
+    line-height: 25px;
+    justify-content: right;
+    text-align: right;
+    margin-right:5px;
+}
+
+.sidebarRight{
+    flex:50%;
+    height: 25px;
+    justify-content: left;
+    margin-left:5px;
+}
+
+.sidebarDropdown{
+    width: 100%;
+    height: 100%;
+    background-color: #333333;
+    color:white;
+    border:0;
+}
+
+.sbButton{
+    width: 100%;
+    height: 100%;
+    background-color: #777777;
+    color:white;
+}
+
+.sbCheckbox{
+    width: 20px;
+    height: 20px;
+    background: #333333;
+    border:0;
+}
+
+.blSlider{
+    width:100%;
+    background-color: orangered;
+    height:100%;
+    justify-content: left;
+}
+.blSlider{
+    height: 100%;
+    background-color: palegoldenrod;
+    cursor:none;
+}
