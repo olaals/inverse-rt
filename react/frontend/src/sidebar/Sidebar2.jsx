@@ -5,7 +5,7 @@ const Sidebar2 = () => {
     return (
         <div>
             <h1>Sidebar2</h1>
-            <SidebarSlider />
+            <SidebarSlider initValue={22} min={21} max={100} />
         </div>
     )
 }

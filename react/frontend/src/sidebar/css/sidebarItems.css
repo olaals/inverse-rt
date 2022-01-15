@@ -46,13 +46,82 @@
 }
 
 .blSlider{
+    position: relative;
     width:100%;
-    background-color: orangered;
+    background-color: #333333;
     height:100%;
     justify-content: left;
 }
-.blSlider{
+.blSliderBar{
     height: 100%;
-    background-color: palegoldenrod;
-    cursor:none;
+    width:30%;
+    background-color: rgb(216, 86, 0);
+}
+
+.blSliderOverlay{
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+}
+
+.inputNumberEditor{
+    text-align: center;
+    background: none;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left:0;
+    top:0;
+    color:white;
+    border:none;
+    margin:0;
+    padding:0;
+}
+
+.blSlider__decrement{
+    position: absolute;
+    display:flex;
+    top:0;
+    left:0;
+    width: 20px;
+    height:100%;
+    background-color: rgba(0.2,0.2,0.2,0.2);
+    color:white;
+    border:0;
+    cursor:pointer;
+}
+
+.blSlider__increment{
+    position: absolute;
+    display:flex;
+    top:0;
+    right:0;
+    width: 20px;
+    height:100%;
+    background-color: rgba(0.2,0.2,0.2,0.2);
+    color:white;
+    border:0;
+    cursor:pointer;
+}
+
+.blSlider .blSlider__increment{
+    visibility: hidden;
+}
+
+.blSlider:hover .blSlider__increment{
+    visibility: visible;
+}
+
+.blSlider .blSlider__decrement{
+    visibility: hidden;
+}
+
+.blSlider:hover .blSlider__decrement{
+    visibility: visible;
+}
+
+.blSlider__icon{
+    margin:auto;
 }
