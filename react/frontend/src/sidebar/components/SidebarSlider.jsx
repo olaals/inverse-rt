@@ -2,18 +2,37 @@ import React from 'react'
 import SidebarDescription from './SidebarDescription'
 import InputNumberEditor from './InputNumberEditor'
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
+import { useSelector } from 'react-redux';
 
-const SidebarSlider = ({ initValue, min, max }) => {
+
+const SidebarSlider = ({ initValue, min, max, onChange }) => {
+
     const [value, setValue] = React.useState(initValue);
+    const [dispatchTimer, setDispatchTimer] = React.useState(null);
 
-    const increment = () => {
-        setValue(value + 1);
+
+
+    const increment = (e) => {
+        e.preventDefault();
+        if (value < max) {
+            onChange(value + 1)
+            setValue(value + 1);
+        }
     };
-    const decrement = () => {
-        setValue(value - 1);
+    const decrement = (e) => {
+        e.preventDefault();
+        if (value > min) {
+            onChange(value - 1)
+            setValue(value - 1);
+        }
     };
+
     const clg = (e) => {
+        clearTimeout(dispatchTimer);
         setValue(e)
+        setDispatchTimer(setTimeout(() => {
+            onChange(e)
+        }, 150))
     }
 
 
@@ -36,6 +55,15 @@ const SidebarSlider = ({ initValue, min, max }) => {
 
         </div>
     )
+}
+
+SidebarSlider.defaultProps = {
+    initValue: 0,
+    min: 0,
+    max: 100,
+    onChange: (e) => {
+        console.log(e)
+    }
 }
 
 export default SidebarSlider

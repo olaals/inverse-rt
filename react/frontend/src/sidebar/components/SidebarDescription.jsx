@@ -2,7 +2,7 @@ import React from 'react'
 
 const SidebarDescription = ({ text }) => {
     return (
-        <div className="sidebarLeft">
+        <div className="sidebarLeft sidebar__description">
             {text}
         </div>
     )

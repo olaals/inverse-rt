@@ -24,7 +24,7 @@ body, html {
 
 .sidebar{
   order:1;
-  background-color: #666666;
+  background-color: #555555;
   height: 100vh; 
   width: 450px;
 }

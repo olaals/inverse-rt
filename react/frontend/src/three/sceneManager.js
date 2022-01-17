@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { store, subscribe } from '../app/store'
 //import { ClickHandler } from './clickHandler';
 //import { MeshModule } from './meshModule'
 //import { PointcloudModule } from './pointcloudModule'
@@ -36,8 +37,17 @@ export class SceneManager {
 
   createCube() {
     const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    const color = store.getState().color.value
+    const material = new THREE.MeshBasicMaterial({ color: color })
     const cube = new THREE.Mesh(geometry, material)
+    this.cube = cube;
+
+    subscribe('color.value', state => {
+      console.log("color changed from subscriber", state.color.value)
+      cube.material.color.set(state.color.value)
+    })
+
+
     this.scene.add(cube)
   }
 
