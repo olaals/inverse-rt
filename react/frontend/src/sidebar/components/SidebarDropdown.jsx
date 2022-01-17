@@ -1,16 +1,15 @@
 import React from 'react'
 import SidebarDescription from './SidebarDescription'
 
-const SidebarDropdown = ({ description, options, onChange }) => {
-
+const SidebarDropdown = ({ description, options, onChange, selectedValue }) => {
     return (
         <div className="sidebarRow">
             <SidebarDescription text={description} />
             <div className="sidebarRight">
-                <select className="sidebarDropdown" onChange={(e) => onChange(e)}>
+                <select value={selectedValue} className="sidebarDropdown" onChange={(e) => onChange(e)}>
+                    <option hidden value="0">Choose</option>
                     {options.map((packed) => {
                         let [index, value, option] = packed
-                        console.log(index, value, option)
                         return <option value={value} key={index}>{option}</option>
                     })}
                 </select>
@@ -28,7 +27,8 @@ SidebarDropdown.defaultProps = {
     ],
     onChange: (e) => {
         console.log(e.target.value)
-    }
+    },
+    selectedValue: "0"
 }
 
 export default SidebarDropdown

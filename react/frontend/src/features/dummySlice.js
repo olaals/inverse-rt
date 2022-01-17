@@ -9,7 +9,6 @@ const dummySlice = createSlice({
   initialState,
   reducers: {
     setDummyValue: (state, action) => {
-      console.log("setDummyValue", action.payload)
       state.value = action.payload
     }
   }
