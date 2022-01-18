@@ -5,10 +5,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setSelectedProject } from '../../features/selectedProjectSlice'
 
 let fetchProjectNames = async () => {
-    let response = await fetch("http://localhost:5000/get-project-names", {
+    let response = await fetch("http://127.0.0.1:5000/get-project-names", {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         }
     })
     // handle failed request

@@ -5,6 +5,7 @@ import SidebarSlider from './components/SidebarSlider'
 import DropdownSelectProject from './Sidebar1/DropdownSelectProject'
 import { useSelector } from 'react-redux'
 import ShowHideMesh from './Sidebar1/ShowHideMesh'
+import RecalculatePointCloud from './Sidebar1/RecalculatePointCloud'
 
 const Sidebar1 = () => {
 
@@ -16,8 +17,7 @@ const Sidebar1 = () => {
             <DropdownSelectProject />
             {projectIsSelected ? <ShowHideMesh /> : null}
             {projectIsSelected ? <SidebarCheckbox description="Show point cloud" /> : null}
-            {projectIsSelected ? <SidebarSlider initValue={22} min={0} max={100}></SidebarSlider> : null}
-            {projectIsSelected ? <SidebarButton description="Add new project" buttonText="Press" /> : null}
+            {projectIsSelected ? <RecalculatePointCloud /> : null}
 
 
 

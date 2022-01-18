@@ -19,7 +19,7 @@ export class MeshModule {
       }
       let projectName = state.selectedProject.projectName
       console.log("loadObjOnProjectSelect")
-      const url = "http://localhost:5000/get-mesh?project=" + projectName
+      const url = "http://127.0.0.1:5000/get-mesh?project=" + projectName
       const loader = new OBJLoader();
       loader.load(url, (obj) => {
         // create phong material
