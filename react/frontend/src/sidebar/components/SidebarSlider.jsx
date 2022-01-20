@@ -5,7 +5,7 @@ import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
 import { useSelector } from 'react-redux';
 
 
-const SidebarSlider = ({ initValue, min, max, onChange }) => {
+const SidebarSlider = ({ description, initValue, min, max, onChange }) => {
 
     const [value, setValue] = React.useState(initValue);
     const [dispatchTimer, setDispatchTimer] = React.useState(null);
@@ -42,7 +42,7 @@ const SidebarSlider = ({ initValue, min, max, onChange }) => {
 
     return (
         <div className="sidebarRow">
-            <SidebarDescription text="Slider" />
+            <SidebarDescription text={description} />
             <div className="sidebarRight">
                 <div className="blSlider">
                     <div style={{ width: calcPercentage(value, min, max) + "%" }} className="blSliderBar"></div>
@@ -58,6 +58,7 @@ const SidebarSlider = ({ initValue, min, max, onChange }) => {
 }
 
 SidebarSlider.defaultProps = {
+    description: "Give description",
     initValue: 0,
     min: 0,
     max: 100,

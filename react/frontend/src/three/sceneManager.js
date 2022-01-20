@@ -4,6 +4,7 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { store, subscribe } from '../app/store'
 //import { ClickHandler } from './clickHandler';
 import { MeshModule } from './meshModule'
+import { PointcloudModule } from './pointcloudModule';
 //import { PointcloudModule } from './pointcloudModule'
 
 
@@ -31,6 +32,7 @@ export class SceneManager {
 
   initSceneModules(scene) {
     this.meshModule = new MeshModule(scene)
+    this.pointcloudModule = new PointcloudModule(scene)
     //this.pointcloudModule = new PointcloudModule(scene, pubsub)
   }
 
