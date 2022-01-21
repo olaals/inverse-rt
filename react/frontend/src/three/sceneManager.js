@@ -5,6 +5,7 @@ import { store, subscribe } from '../app/store'
 //import { ClickHandler } from './clickHandler';
 import { MeshModule } from './meshModule'
 import { PointcloudModule } from './pointcloudModule';
+import { CameraLaserModule } from './cameraLaserModule';
 //import { PointcloudModule } from './pointcloudModule'
 
 
@@ -33,6 +34,7 @@ export class SceneManager {
   initSceneModules(scene) {
     this.meshModule = new MeshModule(scene)
     this.pointcloudModule = new PointcloudModule(scene)
+    this.cameraLaserModule = new CameraLaserModule(scene)
     //this.pointcloudModule = new PointcloudModule(scene, pubsub)
   }
 

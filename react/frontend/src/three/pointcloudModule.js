@@ -57,58 +57,6 @@ export class PointcloudModule {
     })
   }
 
-  addLaser(matrix4Pose) {
-    const url = BACKEND_URL + "/laser.obj"
-    const loader = new OBJLoader();
-    loader.load(url, (object) => {
-      // create phong material
-      const material = new THREE.MeshPhongMaterial({
-        color: 0xaaaaaa,
-        specular: 0xccccaa,
-        shininess: 2,
-        flatShading: true
-      });
-      // add material to object
-      object.traverse(function (child) {
-        if (child instanceof THREE.Mesh) {
-          child.material = material
-        }
-      })
-      // set pose of laser
-      object.applyMatrix(matrix4Pose)
-      // append laser to laserPoses
-      this.laserPoses.push(object)
-      // add laser to scene
-      this.scene.add(object)
-    })
-  }
-
-  addCamera(matrix4Pose) {
-    const url = BACKEND_URL + "/camera.obj"
-    const loader = new OBJLoader();
-    loader.load(url, (object) => {
-      // create phong material
-      const material = new THREE.MeshPhongMaterial({
-        color: 0xaaaaaa,
-        specular: 0xccccaa,
-        shininess: 2,
-        flatShading: true
-      });
-      // add material to object
-      object.traverse(function (child) {
-        if (child instanceof THREE.Mesh) {
-          child.material = material
-        }
-      })
-      // set pose of camera
-      object.applyMatrix(matrix4Pose)
-      // append camera to cameraPoses
-      this.cameraPoses.push(object)
-      // add camera to scene
-      this.scene.add(object)
-    })
-  }
-
   fetchPointcloud() {
     this.scans = []
 
@@ -116,29 +64,6 @@ export class PointcloudModule {
       let response = await fetch(BACKEND_URL + "/get-pointcloud?project=" + projectName)
       let json = await response.json()
       let pointclouds = json.pointclouds
-      let cameraPoses = json.camera_poses
-      let laserPoses = json.laser_poses
-
-      cameraPoses.forEach(pose => {
-        this.cameraPoses.push(listsToMatrix4(pose))
-      })
-      laserPoses.forEach(pose => {
-        this.laserPoses.push(listsToMatrix4(pose))
-      })
-
-
-      console.log(cameraPoses[0])
-      console.log()
-      let cameraPose = listsToMatrix4(cameraPoses[0])
-      this.addCamera(cameraPose)
-      let laserPose = listsToMatrix4(laserPoses[0])
-      this.addLaser(laserPose)
-
-
-
-      // update  scene
-      this.scene.updateMatrixWorld(true)
-      console.log("sphere should be added")
 
 
 
