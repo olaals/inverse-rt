@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { store, subscribe, BACKEND_URL } from '../app/store';
 import { onLoadPointcloud } from '../features/selectedProjectSlice';
+import { listsToMatrix4 } from './threeUtils';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 
 
@@ -8,6 +10,8 @@ import { onLoadPointcloud } from '../features/selectedProjectSlice';
 export class PointcloudModule {
   constructor(scene) {
     this.scans = []
+    this.cameraPoses = []
+    this.laserPoses = []
     this.scene = scene
 
     this.fetchPointcloud()
@@ -15,13 +19,23 @@ export class PointcloudModule {
 
     //this.createPointCloud()
     this.showHidePointcloud()
+    this.selectActivePointcloud()
   }
+
+
 
   selectActivePointcloud() {
     subscribe("selectedProject.selectedScan", state => {
+      console.log("selectActivePointcloud", this.activePointcloud)
+      if (this.activePointcloud !== null) {
+        this.activePointcloud.material.color.setRGB(1, 0, 0);
+      }
       let selectedScan = state.selectedProject.selectedScan
+      console.log("selectActivePointcloud", selectedScan)
       if (selectedScan != -1) {
         this.activePointcloud = this.scans[selectedScan]
+        // change color of active point cloud to green
+        this.activePointcloud.material.color.setRGB(0, 0, 1);
 
       }
     })
@@ -43,6 +57,58 @@ export class PointcloudModule {
     })
   }
 
+  addLaser(matrix4Pose) {
+    const url = BACKEND_URL + "/laser.obj"
+    const loader = new OBJLoader();
+    loader.load(url, (object) => {
+      // create phong material
+      const material = new THREE.MeshPhongMaterial({
+        color: 0xaaaaaa,
+        specular: 0xccccaa,
+        shininess: 2,
+        flatShading: true
+      });
+      // add material to object
+      object.traverse(function (child) {
+        if (child instanceof THREE.Mesh) {
+          child.material = material
+        }
+      })
+      // set pose of laser
+      object.applyMatrix(matrix4Pose)
+      // append laser to laserPoses
+      this.laserPoses.push(object)
+      // add laser to scene
+      this.scene.add(object)
+    })
+  }
+
+  addCamera(matrix4Pose) {
+    const url = BACKEND_URL + "/camera.obj"
+    const loader = new OBJLoader();
+    loader.load(url, (object) => {
+      // create phong material
+      const material = new THREE.MeshPhongMaterial({
+        color: 0xaaaaaa,
+        specular: 0xccccaa,
+        shininess: 2,
+        flatShading: true
+      });
+      // add material to object
+      object.traverse(function (child) {
+        if (child instanceof THREE.Mesh) {
+          child.material = material
+        }
+      })
+      // set pose of camera
+      object.applyMatrix(matrix4Pose)
+      // append camera to cameraPoses
+      this.cameraPoses.push(object)
+      // add camera to scene
+      this.scene.add(object)
+    })
+  }
+
   fetchPointcloud() {
     this.scans = []
 
@@ -50,11 +116,37 @@ export class PointcloudModule {
       let response = await fetch(BACKEND_URL + "/get-pointcloud?project=" + projectName)
       let json = await response.json()
       let pointclouds = json.pointclouds
+      let cameraPoses = json.camera_poses
+      let laserPoses = json.laser_poses
+
+      cameraPoses.forEach(pose => {
+        this.cameraPoses.push(listsToMatrix4(pose))
+      })
+      laserPoses.forEach(pose => {
+        this.laserPoses.push(listsToMatrix4(pose))
+      })
+
+
+      console.log(cameraPoses[0])
+      console.log()
+      let cameraPose = listsToMatrix4(cameraPoses[0])
+      this.addCamera(cameraPose)
+      let laserPose = listsToMatrix4(laserPoses[0])
+      this.addLaser(laserPose)
+
+
+
+      // update  scene
+      this.scene.updateMatrixWorld(true)
+      console.log("sphere should be added")
+
+
+
       pointclouds.forEach(pointcloud => {
         this.addPointCloud(pointcloud)
       })
       let numScans = this.scans.length
-      store.dispatch(onLoadPointcloud(numScans))
+      store.dispatch(onLoadPointcloud(numScans - 1))
     }
 
     subscribe("selectedProject.projectName", state => {
