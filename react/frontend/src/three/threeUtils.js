@@ -10,4 +10,5 @@ export const listsToMatrix4 = (lists) => {
     lists[3][0], lists[3][1], lists[3][2], lists[3][3]
   );
   return matrix;
-} 
+}
+
