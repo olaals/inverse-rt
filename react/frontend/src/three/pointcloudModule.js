@@ -20,6 +20,18 @@ export class PointcloudModule {
     //this.createPointCloud()
     this.showHidePointcloud()
     this.selectActivePointcloud()
+    this.setPointcloudSize()
+  }
+
+  setPointcloudSize() {
+    subscribe('settings.pointcloudSize', (state) => {
+      console.log("setPointcloudSize", state.settings.pointcloudSize)
+      let size = state.settings.pointcloudSize / 100000.0
+      this.scans.forEach(scan => {
+        // set size of each point in pointcloud to size
+        scan.material.size = size
+      })
+    })
   }
 
 
@@ -35,7 +47,11 @@ export class PointcloudModule {
       if (selectedScan != -1) {
         this.activePointcloud = this.scans[selectedScan]
         // change color of active point cloud to green
-        this.activePointcloud.material.color.setRGB(0, 0, 1);
+        this.activePointcloud.material.color.setRGB(0, 1, 0);
+
+
+
+
 
       }
     })
@@ -96,7 +112,7 @@ export class PointcloudModule {
 
     for (let i = 0; i < num_points; i++) {
       //set red color for all points
-      color.setRGB(1, 0, 0);
+      color.setRGB(1, 1, 1);
       // append to colors
       colors.push(color.r, color.g, color.b);
     }

@@ -9,6 +9,23 @@ export class MeshModule {
     this.loadObjOnProjectSelect()
     this.showHideMesh()
     this.activeMesh = null
+    this.setOpacity()
+  }
+
+  setOpacity() {
+    subscribe('settings.meshOpacity', (state) => {
+      console.log("setOpacity", state.settings.meshOpacity)
+      let meshOpacity = state.settings.meshOpacity
+      if (this.activeMesh == null) return
+      let object = this.activeMesh
+      console.log("setting opacity", meshOpacity)
+      object.traverse(function (child) {
+        if (child instanceof THREE.Mesh) {
+          child.material.transparent = true
+          child.material.opacity = meshOpacity / 100.0
+        }
+      });
+    })
   }
 
   loadObjOnProjectSelect() {

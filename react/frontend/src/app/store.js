@@ -5,6 +5,7 @@ import colorReducer from '../features/colorSlice'
 import initSubscriber from 'redux-subscriber';
 import dummyReducer from '../features/dummySlice'
 import selectedProjectReducer from '../features/selectedProjectSlice'
+import settingsReducer from '../features/settingsSlice'
 
 const store = configureStore({
   reducer: {
@@ -12,7 +13,8 @@ const store = configureStore({
     "selectedSidebar": sidebarSelectReducer,
     "color": colorReducer,
     "dummy": dummyReducer,
-    "selectedProject": selectedProjectReducer
+    "selectedProject": selectedProjectReducer,
+    "settings": settingsReducer
   },
 })
 

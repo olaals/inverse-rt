@@ -130,3 +130,11 @@
 .blSlider__icon{
     margin:auto;
 }
+
+.sidebarTextInput{
+    width: 100%;
+    height: 100%;
+    background-color: #333333;
+    color:white;
+    border:0;
+}
