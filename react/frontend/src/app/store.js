@@ -6,6 +6,7 @@ import initSubscriber from 'redux-subscriber';
 import dummyReducer from '../features/dummySlice'
 import selectedProjectReducer from '../features/selectedProjectSlice'
 import settingsReducer from '../features/settingsSlice'
+import displayReducer from '../features/displaySlice'
 
 const store = configureStore({
   reducer: {
@@ -14,7 +15,8 @@ const store = configureStore({
     "color": colorReducer,
     "dummy": dummyReducer,
     "selectedProject": selectedProjectReducer,
-    "settings": settingsReducer
+    "settings": settingsReducer,
+    "display": displayReducer,
   },
 })
 

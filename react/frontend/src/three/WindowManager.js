@@ -67,16 +67,11 @@ export class WindowManager {
 
   createCamera(width, height) {
     let cameraPos = store.getState().selectedProject.cameraPos
-    console.log('cameraPos', cameraPos)
     var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000)
     this.scene.add(camera)
     camera.up.set(0, 0, 1)
     camera.position.set(cameraPos[0], cameraPos[1], cameraPos[2])
-
     camera.lookAt(this.scene.position)
-    // camera orientation
-    console.log("camera rot", camera.rotation)
-
     return camera
   }
 

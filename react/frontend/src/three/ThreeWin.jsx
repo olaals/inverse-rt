@@ -19,7 +19,6 @@ const ThreeWin = ({ sceneManager }) => {
 
 
     useEffect(() => {
-        console.log("Threewin", sceneManager)
         const canvas = canvasRef.current;
         const container = containerRef.current;
 
@@ -36,7 +35,6 @@ const ThreeWin = ({ sceneManager }) => {
             windowManager.dispose();
             resizeObs.disconnect();
         }
-
 
     })
     return (
