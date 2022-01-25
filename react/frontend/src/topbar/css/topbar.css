@@ -1,0 +1,29 @@
+
+.topbar{
+    background-color: #444444;
+    display:flex;
+    height:5vh;
+    width:100%;
+    justify-content: left;
+}
+
+.topbarComponent{
+    margin: 0px 3px 0px 3px;
+    width:200px;
+    height:4vh;
+    background-color: #333333;
+    color:#cccccc;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 4vh;
+    border-radius: 0px 0px 5px 5px;
+    -webkit-user-select: none; /* Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+}
+
+.topbarComponent:hover{
+    border: 1px solid orange;
+    margin: 0px 2px 0px 2px;
+}
