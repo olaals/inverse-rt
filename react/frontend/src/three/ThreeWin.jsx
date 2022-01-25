@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
-import { SceneManager } from "./sceneManager";
+import { WindowManager } from "./WindowManager";
 
-const ThreeWin = () => {
+const ThreeWin = ({ sceneManager }) => {
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
     let timer;
@@ -13,23 +13,30 @@ const ThreeWin = () => {
             let width = container.clientWidth;
             let height = container.clientHeight;
             sceneManager.resizeCanvas(width, height)
-        }, 2)
+        }, 4)
     }
 
 
 
     useEffect(() => {
+        console.log("Threewin", sceneManager)
         const canvas = canvasRef.current;
         const container = containerRef.current;
 
-        let sceneManager = new SceneManager(canvas, container);
-        new ResizeObserver(() => { resize(sceneManager, containerRef.current) }).observe(containerRef.current);
+        let windowManager = new WindowManager(sceneManager, canvas, container);
+        let resizeObs = new ResizeObserver(() => { resize(windowManager, containerRef.current) })
+        resizeObs.observe(containerRef.current);
         const animate = () => {
-            sceneManager.update();
+            windowManager.update();
             requestAnimationFrame(animate);
         }
 
         animate(sceneManager);
+        return () => {
+            windowManager.dispose();
+            resizeObs.disconnect();
+        }
+
 
     })
     return (

@@ -3,6 +3,7 @@ import { IoIosApps } from "react-icons/io";
 import { FaWrench } from "react-icons/fa";
 import { GiMagnifyingGlass } from "react-icons/gi";
 import { GrTest } from "react-icons/gr";
+import { BsFileEarmarkImage, BsBoxArrowUpLeft } from "react-icons/bs";
 import "./css/icons.css"
 import { useDispatch, useSelector } from 'react-redux'
 import { selectSidebar } from '../features/sidebarSelectSlice'
@@ -29,6 +30,12 @@ const SidebarSelect = () => {
                 <GiMagnifyingGlass className="icon-sidebar-select" />
             </div>
             <div className={getClassnames(3)} onClick={() => { dispatch(selectSidebar(3)) }}>
+                <BsFileEarmarkImage className="icon-sidebar-select" />
+            </div>
+            <div className={getClassnames(4)} onClick={() => { dispatch(selectSidebar(4)) }}>
+                <BsBoxArrowUpLeft className="icon-sidebar-select" />
+            </div>
+            <div className={getClassnames(5)} onClick={() => { dispatch(selectSidebar(5)) }}>
                 <GrTest className="icon-sidebar-select" />
             </div>
 

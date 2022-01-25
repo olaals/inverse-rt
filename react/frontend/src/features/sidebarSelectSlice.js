@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  value: 0
+  value: 0,
+  viewThreeWin: true
 }
 
 const sidebarSelectSlice = createSlice({
@@ -10,10 +11,16 @@ const sidebarSelectSlice = createSlice({
   reducers: {
     selectSidebar(state, action) {
       state.value = action.payload
+    },
+    setViewThreeWin(state, action) {
+      state.viewThreeWin = action.payload
     }
   }
 });
 
-export const { selectSidebar } = sidebarSelectSlice.actions
+export const {
+  selectSidebar,
+  setViewThreeWin
+} = sidebarSelectSlice.actions
 
 export default sidebarSelectSlice.reducer
