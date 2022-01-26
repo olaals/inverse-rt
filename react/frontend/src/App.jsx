@@ -13,10 +13,6 @@ const App = () => {
   let sceneManager = null;
   const [sceneHasInit, setSceneHasInit] = useState();
 
-  const viewThreeWin = useSelector(state => state.display.displayThreeWin);
-  const viewScanWin = useSelector(state => state.display.displayScanWin);
-
-
   useEffect(() => {
     sceneManager = new SceneManager();
     setSceneHasInit(sceneManager);
