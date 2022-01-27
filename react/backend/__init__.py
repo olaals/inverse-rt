@@ -6,4 +6,4 @@ from backend.create_pc import *
 app = flask.Flask(__name__)
 CORS(app)
 
-from backend import api_project_settings, expose_assets
+from backend import api_project_settings, expose_assets, api_pointcloud

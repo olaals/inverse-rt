@@ -8,6 +8,7 @@ import ShowHideMesh from './Sidebar1/ShowHideMesh'
 import RecalculatePointCloud from './Sidebar1/RecalculatePointCloud'
 import ShowHidePointcloud from './Sidebar1/ShowHidePointcloud'
 import SelectedScanSlider from './Sidebar1/SelectedScanSlider'
+import DropdownSelectPc from './Sidebar1/DropdownSelectPc'
 
 const Sidebar1 = () => {
 
@@ -18,6 +19,7 @@ const Sidebar1 = () => {
             <h1>Sidebar1</h1>
             <DropdownSelectProject />
             {projectIsSelected ? <ShowHideMesh /> : null}
+            {projectIsSelected ? <DropdownSelectPc /> : null}
             {projectIsSelected ? <ShowHidePointcloud /> : null}
             {projectIsSelected ? <RecalculatePointCloud /> : null}
             {projectIsSelected ? <SelectedScanSlider /> : null}

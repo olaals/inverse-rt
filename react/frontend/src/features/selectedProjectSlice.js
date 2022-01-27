@@ -9,6 +9,7 @@ const initialState = {
   selectedScan: -1,
   numScans: 0,
   cameraPos: [5, 5, 5],
+  selectedPointcloud: ''
 }
 
 const selectedProjectSlice = createSlice({
@@ -36,8 +37,10 @@ const selectedProjectSlice = createSlice({
     },
     setCameraPos: (state, action) => {
       state.cameraPos = action.payload
+    },
+    setSelectedPointcloud: (state, action) => {
+      state.selectedPointcloud = action.payload
     }
-
   }
 })
 
@@ -48,5 +51,6 @@ export const {
   onLoadPointcloud,
   setSelectedScan,
   setCameraPos,
+  setSelectedPointcloud
 } = selectedProjectSlice.actions
 export default selectedProjectSlice.reducer
