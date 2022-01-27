@@ -34,13 +34,13 @@ def load_image(filename):
     img = np.array(img)
     return img
 
-def project_scans(project_dir):
+def project_scans(project_dir, pointcloud_dir):
     parent_scan_dirs = os.path.join(project_dir, 'scans')
     scan_dirs = [os.path.join(parent_scan_dirs,scan_dir) for scan_dir in os.listdir(parent_scan_dirs)]
     scan_dirs.sort()
     for scan_dir in scan_dirs:
         points = []
-        img_path = os.path.join(scan_dir, "scan.png")
+        img_path = os.path.join(scan_dir, "pcs", pointcloud_dir, "scan.png")
         img = load_image(img_path)
 
         T_cl = np.load(os.path.join(scan_dir, "T_cl.npy")).astype(np.float32)
@@ -62,7 +62,10 @@ def project_scans(project_dir):
                 x = project_pixel(pix, transl, plane_normal, K_inv, T_wc)
                 points.append(x.tolist())
         points = np.array(points)
-        np.save(os.path.join(scan_dir, "points_W.npy"), points)
+        np.save(os.path.join(scan_dir, "pcs", pointcloud_dir, "points_W.npy"), points)
+
+
+
 
 
 def project_scans_matmul(project_dir):
@@ -101,19 +104,5 @@ def project_scans_matmul(project_dir):
 
 if __name__ == '__main__':
     proj_dir = "scan-projects/corner01"
-    import time
-
-    start = time.time()
-    points = project_scans(proj_dir)
-    end = time.time()
-    print(end - start)
-
-    start = time.time()
-    points2 = project_scans_matmul(proj_dir)
-    end = time.time()
-    print(end - start)
-
-    print(np.shape(points))
-    print(np.shape(points2))
-    print(points[:5])
-    print(points2[:5])
+    pc_dir = "conv3"
+    project_scans(proj_dir, pc_dir)

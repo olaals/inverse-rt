@@ -35,7 +35,8 @@ def preprocess_scans(project_dir, pc_dir_name):
     scan_dirs.sort()
     for scan_dir in scan_dirs:
         img_path = os.path.join(scan_dir, "scan.png")
-        img = load_image(img_path)
+        # load image to grayscale using pillow and convert to numpy
+        img = np.array(PIL.Image.open(img_path).convert('L'))
         pc_dir = os.path.join(scan_dir, "pcs", pc_dir_name)
         if not os.path.exists(pc_dir):
             os.mkdir(pc_dir)
@@ -52,9 +53,9 @@ def preprocess_scans(project_dir, pc_dir_name):
 
 
 if __name__ == '__main__':
-    img_path = os.path.join("./scan-projects/corner01/scans/scan00/scan.png")
-    # load image using PIL to numpy
-    img = np.array(PIL.Image.open(img_path).convert('L'))
-    preprocess_scan(img)
+
+    project_dir = os.path.join("./scan-projects/corner01")
+    pc_dir_name = "conv3"
+    preprocess_scans(project_dir, pc_dir_name)
 
 
