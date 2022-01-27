@@ -7,6 +7,7 @@ import dummyReducer from '../features/dummySlice'
 import selectedProjectReducer from '../features/selectedProjectSlice'
 import settingsReducer from '../features/settingsSlice'
 import displayReducer from '../features/displaySlice'
+import threeCanvasClickSlice from '../features/threeCanvasClickSlice';
 
 const store = configureStore({
   reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
     "selectedProject": selectedProjectReducer,
     "settings": settingsReducer,
     "display": displayReducer,
+    "threeCanvasClick": threeCanvasClickSlice
   },
 })
 

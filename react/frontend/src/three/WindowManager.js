@@ -16,7 +16,8 @@ export class WindowManager {
 
     this.scene = sceneManager.getScene()
     this.renderer = this.createRenderer(canvas, content)
-    this.camera = this.createCamera(width, height)
+    this.camera = sceneManager.getCamera()
+    this.resizeCanvas(width, height)
     //this.clickHandler = new ClickHandler(canvas, this.scene, this.camera, pubsub)
     this.controls = this.createControls(this.camera, this.renderer)
 
@@ -65,15 +66,8 @@ export class WindowManager {
     return renderer
   }
 
-  createCamera(width, height) {
-    let cameraPos = store.getState().selectedProject.cameraPos
-    var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000)
-    this.scene.add(camera)
-    camera.up.set(0, 0, 1)
-    camera.position.set(cameraPos[0], cameraPos[1], cameraPos[2])
-    camera.lookAt(this.scene.position)
-    return camera
-  }
+
+
 
   resizeCanvas(width, height) {
     this.renderer.setSize(width, height)

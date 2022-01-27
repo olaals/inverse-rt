@@ -21,6 +21,7 @@ export class PointcloudModule {
     this.showHidePointcloud()
     this.selectActivePointcloud()
     this.setPointcloudSize()
+    this.pointHashTable = {}
   }
 
   setPointcloudSize() {
@@ -33,6 +34,20 @@ export class PointcloudModule {
       })
     })
   }
+
+  roundFloatToString(num) {
+    // round a decimal number to 5 places and return as string
+    return (Math.round(num * 100000) / 100000).toFixed(2)
+  }
+
+  getDictIdx(x, y, z) {
+    let key = this.roundFloatToString(x) + "," + this.roundFloatToString(y) + "," + this.roundFloatToString(z)
+    return key
+  }
+
+
+
+
 
 
 
@@ -83,8 +98,10 @@ export class PointcloudModule {
 
 
 
+      let idx = 0
       pointclouds.forEach(pointcloud => {
-        this.addPointCloud(pointcloud)
+        this.addPointCloud(pointcloud, idx)
+        idx += 1;
       })
       let numScans = this.scans.length
       store.dispatch(onLoadPointcloud(numScans - 1))
@@ -101,7 +118,7 @@ export class PointcloudModule {
 
   }
 
-  addPointCloud(pointcloud) {
+  addPointCloud(pointcloud, idx) {
     console.log("addPointCloud")
     const geometry = new THREE.BufferGeometry();
     // flatten array pointcloud using flat() array method
@@ -111,7 +128,25 @@ export class PointcloudModule {
     let colors = []
     let color = new THREE.Color();
 
+    let indices = new Uint16Array(num_points);
+
+    let testKey = ""
+
     for (let i = 0; i < num_points; i++) {
+      indices[i] = i;
+
+      //if (i < 10) {
+
+      this.pointHashTable[i + this.getDictIdx(pointcloud[i][0], pointcloud[i][1], pointcloud[i][2])] = [i, idx];
+      if (i == 0 && idx == 0) {
+        testKey += this.getDictIdx(positions[i * 3], positions[i * 3 + 1], positions[i * 3 + 2])
+        console.log("testKey", testKey)
+        console.log(this.pointHashTable[testKey])
+      }
+
+      //}
+      //console.log("pointHashTable", this.pointHashTable)
+
       //set red color for all points
       color.setRGB(1, 1, 1);
       // append to colors
@@ -121,9 +156,11 @@ export class PointcloudModule {
 
 
     //geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+    geometry.setIndex(new THREE.BufferAttribute(indices, 1));
 
 
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+    geometry.setAttribute('random_attr', new THREE.Float32BufferAttribute(positions, 3));
     // set color attrubute
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 

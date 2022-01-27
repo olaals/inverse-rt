@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { WindowManager } from "./WindowManager";
+import { setMouseDownPos, setClickedPos } from "../features/threeCanvasClickSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { useState } from "react";
+import { store } from '../app/store'
 
 const ThreeWin = ({ sceneManager }) => {
+    const dispatch = useDispatch();
     const containerRef = useRef(null);
     const canvasRef = useRef(null);
     let timer;
@@ -16,11 +21,32 @@ const ThreeWin = ({ sceneManager }) => {
         }, 4)
     }
 
+    const onMouseDown = (event, canvas) => {
+        const rect = canvas.getBoundingClientRect();
+        const mousePos = [event.clientX - rect.left, event.clientY - rect.top];
+        dispatch(setMouseDownPos(mousePos));
+
+    }
+    const onMouseUp = (event, canvas) => {
+        const rect = canvas.getBoundingClientRect();
+        const mouseUpPos = [event.clientX - rect.left, event.clientY - rect.top];
+        const mouseDownPos = store.getState().threeCanvasClick.mouseDownPos
+        if (mouseDownPos[0] === mouseUpPos[0] && mouseDownPos[1] === mouseUpPos[1]) {
+            const mouse_x = (mouseUpPos[0] / canvas.clientWidth) * 2 - 1;
+            const mouse_y = -(mouseUpPos[1] / canvas.clientHeight) * 2 + 1;
+            const clicked = [mouse_x, mouse_y];
+            dispatch(setClickedPos(clicked));
+        }
+    }
+
 
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const container = containerRef.current;
+
+        canvas.addEventListener('mousedown', (e) => onMouseDown(e, canvas))
+        canvas.addEventListener('mouseup', (e) => onMouseUp(e, canvas))
 
         let windowManager = new WindowManager(sceneManager, canvas, container);
         let resizeObs = new ResizeObserver(() => { resize(windowManager, containerRef.current) })
@@ -34,6 +60,9 @@ const ThreeWin = ({ sceneManager }) => {
         return () => {
             windowManager.dispose();
             resizeObs.disconnect();
+            // remove event listeners
+            canvas.removeEventListener('mousedown', onMouseDown)
+            canvas.removeEventListener('mouseup', onMouseUp)
         }
 
     })
