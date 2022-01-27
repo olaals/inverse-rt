@@ -41,29 +41,6 @@ def recalculate_pointcloud():
     project = request.args.get('project')
     return jsonify({"message": "recalculating pointcloud"})
 
-@app.route('/get-pointcloud', methods=['GET'])
-def get_pointcloud():
-    response = {}
-    response["pointclouds"] = []
-    response["camera_poses"] = []
-    response["laser_poses"] = []
-    project_name = request.args.get('project')
-    filename = "points_W.npy"
-    project_scan_dir = os.path.join("./backend/scan-projects", project_name, "scans")
-    scan_dirs = [os.path.join(project_scan_dir, scan_dir) for scan_dir in os.listdir(project_scan_dir)]
-    scan_dirs.sort()
-
-    for scan_dir in scan_dirs:
-        points = np.load(os.path.join(scan_dir, filename))
-        camera_pose = np.load(os.path.join(scan_dir, "T_wc.npy"))
-        laser_pose = np.load(os.path.join(scan_dir, "T_wl.npy"))
-
-        response["pointclouds"].append(points.tolist())
-        response["camera_poses"].append(camera_pose.tolist())
-        response["laser_poses"].append(laser_pose.tolist())
-
-
-    return jsonify(response)
 
 @app.route('/get-cam-laser-poses', methods=['GET'])
 def get_cam_laser_poses():

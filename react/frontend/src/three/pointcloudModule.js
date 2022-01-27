@@ -76,8 +76,8 @@ export class PointcloudModule {
   fetchPointcloud() {
     this.scans = []
 
-    const fetch_req = async (projectName) => {
-      let response = await fetch(BACKEND_URL + "/get-pointcloud?project=" + projectName)
+    const fetch_req = async (projectName, pointcloudName) => {
+      let response = await fetch(BACKEND_URL + "/get-pointcloud?project=" + projectName + "&pointcloud=" + pointcloudName)
       let json = await response.json()
       let pointclouds = json.pointclouds
 
@@ -90,11 +90,12 @@ export class PointcloudModule {
       store.dispatch(onLoadPointcloud(numScans - 1))
     }
 
-    subscribe("selectedProject.projectName", state => {
+    subscribe("selectedProject.selectedPointcloud", state => {
       console.log("fetchPointcloud")
       let projectName = state.selectedProject.projectName
-      console.log("fetch req project name", projectName)
-      fetch_req(projectName)
+      let pointcloudName = state.selectedProject.selectedPointcloud
+      console.log("fetch req project name", projectName, pointcloudName)
+      fetch_req(projectName, pointcloudName)
     })
 
 

@@ -2,7 +2,7 @@ import os
 
 
 def get_scan_dirs(project_dir):
-    project_scan_dir = os.path.join(project_dir, "scans")
+    project_scan_dir = os.path.join("./backend/scan-projects", project_dir, "scans")
     scan_dirs = [os.path.join(project_scan_dir, scan_dir) for scan_dir in os.listdir(project_scan_dir)]
     scan_dirs.sort()
     return scan_dirs
