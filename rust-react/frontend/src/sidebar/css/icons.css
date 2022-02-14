@@ -1,0 +1,21 @@
+
+.icon-div{
+    display: flex;
+    height: 50px;
+    border-radius: 0 15px 15px 0;
+}
+
+.icon-div:hover{
+    background-color: orange;
+}
+
+.icon-sidebar-select{
+    width: 30px;
+    height: 30px;
+    margin: auto;
+    vertical-align: middle;
+}
+
+.sidebarIconSelected{
+    background-color: #555555;
+}

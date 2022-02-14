@@ -1,0 +1,15 @@
+
+
+.scanDisplayWindow{
+    flex:1;
+    order:3;
+    background-color: rgb(24, 24, 24);
+    color:aliceblue;
+    height: 95vh;
+    width:100%;
+    overflow: hidden;
+    background-size: 40px 40px;
+    background-image:
+      linear-gradient(to right, rgb(36, 36, 36) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(36, 36, 36) 1px, transparent 1px);
+  }
