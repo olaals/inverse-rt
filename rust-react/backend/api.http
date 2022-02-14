@@ -1,0 +1,10 @@
+
+GET http://127.0.0.1:8080/
+###
+POST http://127.0.0.1:8080/echo
+content-type: application/json
+
+{
+    "name": "sample",
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
