@@ -1,12 +1,63 @@
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use crate::project_pc::*;
+use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder, Result};
+use serde::{Deserialize, Serialize};
+mod helpers;
+use helpers::*;
 
 #[get("/")]
-async fn hello() -> impl Responder {
+async fn hello(req: HttpRequest) -> impl Responder {
+    let name = req.match_info().get("name").unwrap_or("World");
+    println!("{}", name);
     HttpResponse::Ok().body("Hello world!")
+}
+
+#[derive(Debug, Deserialize)]
+pub struct Args {
+    name: String,
+}
+
+#[get("/arg")]
+pub async fn get_arg(info: web::Query<Args>) -> impl Responder {
+    println!("{}", info.name);
+    HttpResponse::Ok()
+}
+
+#[derive(Serialize)]
+struct ProjectListRes {
+    files: Vec<String>,
+}
+
+#[get("/get-project-names")]
+pub async fn get_project_names() -> Result<impl Responder> {
+    let project_names = list_files_in_dir("scan-projects");
+    let res = ProjectListRes {
+        files: project_names,
+    };
+    Ok(web::Json(res))
 }
 
 #[post("/echo")]
 async fn echo(req_body: String) -> impl Responder {
     println!("{:?}", req_body);
     HttpResponse::Ok().body(req_body)
+}
+
+#[derive(Deserialize)]
+struct PointcloudRequest {
+    project: String,
+}
+
+#[derive(Serialize)]
+struct PointcloudRes {
+    pointclouds: Vec<Vec<Vec<f64>>>,
+}
+
+#[get("/get-pointcloud")]
+async fn get_pc(req: web::Query<PointcloudRequest>) -> Result<impl Responder> {
+    let dir = format!("scan-projects/{}", req.project);
+    let points = project_pixels_from_dir(String::from(dir));
+    let res = PointcloudRes {
+        pointclouds: points,
+    };
+    Ok(web::Json(res))
 }
