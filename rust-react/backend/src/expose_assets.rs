@@ -15,3 +15,10 @@ async fn get_mesh(req: web::Query<MeshRequest>) -> Result<NamedFile> {
     let file = NamedFile::open(path).unwrap();
     Ok(file)
 }
+
+#[get("assets/{filename:.*}")]
+async fn get_asset(filename: web::Path<String>) -> Result<NamedFile> {
+    let path = format!("assets/{}", filename);
+    let file = NamedFile::open(path).unwrap();
+    Ok(file)
+}

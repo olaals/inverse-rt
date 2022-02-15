@@ -29,6 +29,7 @@ const DropdownSelectProject = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         fetchProjectNames().then(data => {
+            console.log(data)
             // map projects and assign unique id
             let idx = 0;
             let options = []

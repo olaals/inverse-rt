@@ -1,7 +1,7 @@
 
-GET http://127.0.0.1:8080/?name=test
+GET http://127.0.0.1:5000/?name=test
 ###
-POST http://127.0.0.1:8080/echo
+POST http://127.0.0.1:5000/echo
 content-type: application/json
 
 {
@@ -9,8 +9,8 @@ content-type: application/json
     "time": "Wed, 21 Oct 2015 18:27:50 GMT"
 }
 ###
-GET http://127.0.0.1:8080/get-pointcloud?project=corner01
+GET http://127.0.0.1:5000/get-pointcloud?project=corner01
 ###
-GET http://127.0.0.1:8080/get-mesh?project=corner01
+GET http://127.0.0.1:5000/get-mesh?project=corner01
 ###
-GET http://127.0.0.1:8080/get-project-names
+GET http://127.0.0.1:5000/get-project-names

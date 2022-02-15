@@ -1,8 +1,9 @@
-use crate::project_pc::*;
 use actix_web::{get, post, web, App, HttpRequest, HttpResponse, HttpServer, Responder, Result};
 use serde::{Deserialize, Serialize};
 mod helpers;
 use helpers::*;
+mod project_pc;
+use project_pc::*;
 
 #[get("/")]
 async fn hello(req: HttpRequest) -> impl Responder {
@@ -24,14 +25,14 @@ pub async fn get_arg(info: web::Query<Args>) -> impl Responder {
 
 #[derive(Serialize)]
 struct ProjectListRes {
-    files: Vec<String>,
+    project_names: Vec<String>,
 }
 
 #[get("/get-project-names")]
 pub async fn get_project_names() -> Result<impl Responder> {
     let project_names = list_files_in_dir("scan-projects");
     let res = ProjectListRes {
-        files: project_names,
+        project_names: project_names,
     };
     Ok(web::Json(res))
 }

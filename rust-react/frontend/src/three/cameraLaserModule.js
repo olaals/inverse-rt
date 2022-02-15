@@ -75,7 +75,7 @@ export class CameraLaserModule {
   }
 
   addLaser() {
-    const url = BACKEND_URL + "/laser.obj"
+    const url = BACKEND_URL + "/assets/laser.obj"
     const loader = new OBJLoader();
     loader.load(url, (object) => {
       // create phong material
@@ -99,7 +99,7 @@ export class CameraLaserModule {
   }
 
   addCamera() {
-    const url = BACKEND_URL + "/camera.obj"
+    const url = BACKEND_URL + "/assets/camera.obj"
     const loader = new OBJLoader();
     loader.load(url, (object) => {
       // create phong material
