@@ -1,9 +1,7 @@
 use actix_cors::Cors;
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use backend::expose_assets::*;
-use backend::main_api::get_arg;
 use backend::main_api::*;
-use backend::project_pc::*;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
@@ -17,6 +15,9 @@ async fn main() -> std::io::Result<()> {
             .service(get_pc)
             .service(get_project_names)
             .service(get_asset)
+            .service(get_camera_poses)
+            .service(get_laser_poses)
+            .service(get_camera_laser_poses)
         //.route("/arg", web::get().to(get_arg))
     })
     .workers(2)

@@ -12,17 +12,6 @@ async fn hello(req: HttpRequest) -> impl Responder {
     HttpResponse::Ok().body("Hello world!")
 }
 
-#[derive(Debug, Deserialize)]
-pub struct Args {
-    name: String,
-}
-
-#[get("/arg")]
-pub async fn get_arg(info: web::Query<Args>) -> impl Responder {
-    println!("{}", info.name);
-    HttpResponse::Ok()
-}
-
 #[derive(Serialize)]
 struct ProjectListRes {
     project_names: Vec<String>,
@@ -59,6 +48,46 @@ async fn get_pc(req: web::Query<PointcloudRequest>) -> Result<impl Responder> {
     let points = project_pixels_from_dir(String::from(dir));
     let res = PointcloudRes {
         pointclouds: points,
+    };
+    Ok(web::Json(res))
+}
+
+#[derive(Deserialize)]
+struct ProjectRequest {
+    project: String,
+}
+
+#[get("/get-camera-poses")]
+async fn get_camera_poses(req: web::Query<ProjectRequest>) -> Result<impl Responder> {
+    println!("Get camera poses: {}", req.project);
+    let project_name = &req.project;
+    let poses = get_poses(project_name, "T_wc.npy");
+    Ok(web::Json(poses))
+}
+
+#[get("/get-laser-poses")]
+async fn get_laser_poses(req: web::Query<ProjectRequest>) -> Result<impl Responder> {
+    println!("Get laser poses: {}", req.project);
+    let project_name = &req.project;
+    let poses = get_poses(project_name, "T_wl.npy");
+    Ok(web::Json(poses))
+}
+
+#[derive(Serialize)]
+struct LaserCamRes {
+    laser_poses: Vec<Vec<Vec<f64>>>,
+    camera_poses: Vec<Vec<Vec<f64>>>,
+}
+
+#[get("/get-cam-laser-poses")]
+async fn get_camera_laser_poses(req: web::Query<ProjectRequest>) -> Result<impl Responder> {
+    println!("Get camera-laser poses: {}", req.project);
+    let project_name = &req.project;
+    let camera_poses = get_poses(project_name, "T_wc.npy");
+    let laser_poses = get_poses(project_name, "T_wl.npy");
+    let res = LaserCamRes {
+        laser_poses: laser_poses,
+        camera_poses: camera_poses,
     };
     Ok(web::Json(res))
 }
