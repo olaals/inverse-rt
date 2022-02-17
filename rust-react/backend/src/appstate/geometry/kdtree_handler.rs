@@ -1,7 +1,7 @@
 use kdtree::distance::squared_euclidean;
 use kdtree::KdTree;
 
-struct PtKdTree {
+pub struct PtKdTree {
     kdtree: KdTree<f64, usize, [f64; 3]>,
 }
 
@@ -58,4 +58,3 @@ mod tests {
         assert_eq!(res, vec![0, 1, 3]);
     }
 }
-

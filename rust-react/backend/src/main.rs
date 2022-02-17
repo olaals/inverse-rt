@@ -1,13 +1,13 @@
 use actix_cors::Cors;
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use backend::appstate::*;
 use backend::expose_assets::*;
 use backend::main_api::*;
-use backend::appstate::*;
 use std::sync::Mutex;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let app_state = web::Data::new(AppState{counter:Mutex::new(1)});
+    let app_state = web::Data::new(AppState::new());
     HttpServer::new(move || {
         let cors = Cors::permissive();
         App::new()

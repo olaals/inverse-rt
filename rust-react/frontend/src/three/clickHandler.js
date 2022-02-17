@@ -25,7 +25,7 @@ export class ClickHandler {
       mouse.x = clickedPos[0]
       mouse.y = clickedPos[1]
       this.raycaster.setFromCamera(mouse, this.camera);
-      const intersections = this.raycaster.intersectObjects(this.pc_module.scans, false);
+      const intersections = this.raycaster.intersectObjects([this.pc_module.pointcloud], false);
       const intersection = (intersections.length) > 0 ? intersections[0] : null;
       console.log(intersection)
       if (intersection) {
@@ -33,11 +33,6 @@ export class ClickHandler {
         let point = intersection.point
         let index = intersection.index
         let pos = [point.x, point.y, point.z]
-        let dictKey = index + this.pc_module.getDictIdx(pos[0], pos[1], pos[2])
-        console.log(dictKey)
-        let info = this.pc_module.pointHashTable[dictKey]
-        console.log("index", info[0])
-        console.log("pointcloud", info[1])
       }
 
 
