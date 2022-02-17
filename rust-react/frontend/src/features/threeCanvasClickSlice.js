@@ -10,9 +10,11 @@ const threeCanvasClickSlice = createSlice({
   initialState,
   reducers: {
     setClickedPos(state, action) {
+      console.log("setClickedPos", action.payload)
       state.clickedPos = action.payload
     },
     setMouseDownPos(state, action) {
+      console.log("setMouseDownPos", action.payload)
       state.mouseDownPos = action.payload
     }
   },

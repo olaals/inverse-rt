@@ -6,6 +6,7 @@ import { useState } from "react";
 import { store } from '../app/store'
 
 const ThreeWin = ({ sceneManager }) => {
+    console.log("init threewin")
     const dispatch = useDispatch();
     const containerRef = useRef(null);
     const canvasRef = useRef(null);

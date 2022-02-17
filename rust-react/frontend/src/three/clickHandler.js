@@ -1,6 +1,7 @@
 // import THREE as es6 module
 import * as THREE from 'three';
-import { store, subscribe } from '../app/store';
+import { store, subscribe, BACKEND_URL } from '../app/store';
+import { setIndex } from '../features/selectPointSlice';
 
 
 
@@ -15,12 +16,19 @@ export class ClickHandler {
     this.selected = null
     this.pc_module = pc_module
     this.listenToClick()
+    this.last_click = null
   }
 
   listenToClick() {
     console.log("listenToClick")
     subscribe("threeCanvasClick.clickedPos", (state) => {
+
+      console.log("listenToClick", state.threeCanvasClick.clickedPos)
       let clickedPos = state.threeCanvasClick.clickedPos
+      if (clickedPos == this.last_click) {
+        return
+      }
+      this.last_click = clickedPos
       const mouse = new THREE.Vector2();
       mouse.x = clickedPos[0]
       mouse.y = clickedPos[1]
@@ -32,6 +40,10 @@ export class ClickHandler {
         this.createSphereAtClick(intersection.point)
         let point = intersection.point
         let index = intersection.index
+        let from_scan = this.pc_module.getScanFromIndex(index)
+        console.log("from_scan", from_scan)
+        store.dispatch(setIndex({ index: index, from_scan: from_scan, position: [point.x, point.y, point.z] }));
+        console.log("index", index)
         let pos = [point.x, point.y, point.z]
       }
 
@@ -55,10 +67,10 @@ export class ClickHandler {
     const intersection = (intersections.length) > 0 ? intersections[0] : null;
     console.log(intersection)
     // if interscetion is not null
+    console.log("intersection")
     if (intersection) {
       this.createSphereAtClick(intersection.point)
-
-
+      console.log(intersection.index)
     }
   }
 

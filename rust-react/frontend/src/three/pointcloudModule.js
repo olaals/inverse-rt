@@ -42,6 +42,14 @@ export class PointcloudModule {
 
   }
 
+  getScanFromIndex(index) {
+    let scan = 0
+    while (index >= this.cumul_scan_lengths[scan]) {
+      scan += 1
+    }
+    return scan - 1
+  }
+
 
   selectActivePointcloud() {
     subscribe("selectedProject.selectedScan", state => {
