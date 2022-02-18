@@ -183,6 +183,14 @@ fn load_matrices_and_project(path_struct: &PathStruct) -> Vec<Vec<f64>> {
     return projected_pixels;
 }
 
+fn calculate_vec_towards_origin(
+    vec: &Vec<Vec<f64>>,
+    T_wl: &na::IsometryMatrix3<f64>,
+) -> Vec<Vec<f64>> {
+    let ret_vec: Vec<Vec<f64>> = Vec::new();
+    return ret_vec;
+}
+
 pub fn project_pixels_from_dir(project_dir: String) -> Vec<Vec<Vec<f64>>> {
     let mut return_vec: Vec<Vec<Vec<f64>>> = Vec::new();
     let scan_dirs = format!("{}/scans", project_dir);
