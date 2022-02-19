@@ -7,22 +7,22 @@ use std::path::Path;
 pub struct Point3(na::Point3<f64>);
 
 impl Point3 {
-    fn new(x: f64, y: f64, z: f64) -> Point3 {
+    pub fn new(x: f64, y: f64, z: f64) -> Point3 {
         Point3(na::Point3::new(x, y, z))
     }
-    fn x(&self) -> f64 {
+    pub fn x(&self) -> f64 {
         self.0.x
     }
-    fn y(&self) -> f64 {
+    pub fn y(&self) -> f64 {
         self.0.y
     }
-    fn z(&self) -> f64 {
+    pub fn z(&self) -> f64 {
         self.0.z
     }
-    fn as_array(&self) -> [f64; 3] {
+    pub fn as_array(&self) -> [f64; 3] {
         [self.x(), self.y(), self.z()]
     }
-    fn from_vec(vec: &Vec3) -> Point3 {
+    pub fn from_vec(vec: &Vec3) -> Point3 {
         Point3::new(vec.x(), vec.y(), vec.z())
     }
 }
@@ -59,6 +59,9 @@ impl Vec3 {
     }
     pub fn from_inner(vec: &na::Vector3<f64>) -> Vec3 {
         Vec3(na::Vector3::new(vec.x, vec.y, vec.z))
+    }
+    pub fn scale(&self, scale: f64) -> Vec3 {
+        Vec3(self.0 * scale)
     }
 }
 
@@ -185,7 +188,7 @@ impl SE3 {
     pub fn invert(&self) -> SE3 {
         SE3(self.0.inverse())
     }
-    pub fn from_npy(path: &Path) -> SE3 {
+    pub fn from_npy(path: &str) -> SE3 {
         let reader = File::open(path).unwrap();
         let arr = Array2::<f64>::read_npy(reader).unwrap();
         let arr_mat3: na::Matrix3<f64> = na::Matrix3::new(

@@ -39,7 +39,7 @@ impl CameraMatrix {
     pub fn inv_K(&self) -> &na::Matrix3<f64> {
         &self.inv_K
     }
-    pub fn from_npy(path: &Path) -> CameraMatrix {
+    pub fn from_npy(path: &str) -> CameraMatrix {
         let reader = File::open(path).unwrap();
         let res = Array2::<f64>::read_npy(reader);
         match res {

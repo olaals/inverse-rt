@@ -3,6 +3,21 @@ use crate::geometry::common::view_geo::ImgCoord;
 use lodepng::Bitmap;
 use rgb::{RGB, RGB8};
 
+pub fn load_image(path: &str) -> Bitmap<RGB<u8>> {
+    println!("Loading image: {}", path);
+    match lodepng::decode24_file(path) {
+        Ok(image) => {
+            println!("Loaded image: {}", path);
+            return image;
+        }
+        Err(error) => {
+            println!("Error loading image: {}", path);
+            println!("{}", error);
+            panic!("Could not load image: {}", path);
+        }
+    }
+}
+
 pub fn filter_image(image: &Bitmap<RGB<u8>>, threshold: u8) -> Vec<ImgCoord> {
     let buffer = &image.buffer;
     let mut img_coord_vec: Vec<ImgCoord> = Vec::new();
@@ -17,6 +32,11 @@ pub fn filter_image(image: &Bitmap<RGB<u8>>, threshold: u8) -> Vec<ImgCoord> {
         }
     }
     return img_coord_vec;
+}
+
+pub fn load_and_filter_image(path: &str, threshold: u8) -> Vec<ImgCoord> {
+    let image = load_image(path);
+    return filter_image(&image, threshold);
 }
 
 fn img_coords_to_image(img_coords: &Vec<ImgCoord>, width: usize, height: usize) {

@@ -1,6 +1,7 @@
 pub mod common;
 pub mod normal_est;
 pub mod optim;
+pub mod project_pc;
 use optim::bvh_handler::SphereBvh;
 use optim::kdtree_handler::PtKdTree;
 
