@@ -27,22 +27,7 @@ fn load_image(path: &str) -> Bitmap<RGB<u8>> {
     }
 }
 
-struct ImgCoord {
-    x: u32,
-    y: u32,
-}
 
-impl PartialEq for ImgCoord {
-    fn eq(&self, other: &ImgCoord) -> bool {
-        self.x == other.x && self.y == other.y
-    }
-}
-
-impl ImgCoord {
-    fn new(x: u32, y: u32) -> ImgCoord {
-        ImgCoord { x, y }
-    }
-}
 
 fn img_coords_to_image(img_coords: &Vec<ImgCoord>, width: usize, height: usize) {
     let mut image_vec: Vec<RGB8> = vec![RGB::new(0, 0, 0); (width * height) as usize];
@@ -56,21 +41,6 @@ fn img_coords_to_image(img_coords: &Vec<ImgCoord>, width: usize, height: usize) 
     lodepng::encode24_file("out.png", &image_vec, width, height).unwrap();
 }
 
-fn filter_image(image: &Bitmap<RGB<u8>>, threshold: u8) -> Vec<ImgCoord> {
-    let buffer = &image.buffer;
-    let mut img_coord_vec: Vec<ImgCoord> = Vec::new();
-    for y in 0..image.height {
-        for x in 1..(image.width - 1) {
-            let prev_red = buffer[y * image.width + x - 1].r;
-            let red = buffer[y * image.width + x].r;
-            let next_red = buffer[y * image.width + x + 1].r;
-            if prev_red > threshold && red > threshold && next_red > threshold {
-                img_coord_vec.push(ImgCoord::new(x as u32, y as u32));
-            }
-        }
-    }
-    return img_coord_vec;
-}
 
 fn load_numpy_transf(path: &str) -> na::IsometryMatrix3<f64> {
     let reader = File::open(path).unwrap();
