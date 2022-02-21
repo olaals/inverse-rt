@@ -1,22 +1,21 @@
 pub mod common;
+pub mod constraint_vec;
 pub mod normal_est;
 pub mod optim;
 pub mod project_pc;
+use common::common_types::*;
+use common::vec::*;
+use constraint_vec::*;
+use itertools::izip;
 use optim::bvh_handler::SphereBvh;
 use optim::kdtree_handler::PtKdTree;
 
-pub struct Pt3 {
-    pub x: f64,
-    pub y: f64,
-    pub z: f64,
-    pub incompatible_index: Vec<usize>,
-    pub from_scan: usize,
-}
-
 pub struct GeometryHandler {
-    kdtree: PtKdTree,
-    bvh: SphereBvh,
-    ptVec: Vec<Pt3>,
+    pub kdtree: PtKdTree,
+    pub bvh: SphereBvh,
+    pub constrVec: ConstraintVec,
+    pub raw_scans: Vec<Vec<Point3>>,
+    pub scan_params_vec: ScanParamsVec,
 }
 
 impl GeometryHandler {
@@ -24,26 +23,37 @@ impl GeometryHandler {
         GeometryHandler {
             kdtree: PtKdTree::new(),
             bvh: SphereBvh::new(),
-            ptVec: Vec::new(),
+            constrVec: ConstraintVec::new(),
+            raw_scans: Vec::new(),
+            scan_params_vec: ScanParamsVec::new(),
         }
     }
+    pub fn build_from_project(&mut self, project_name: &str) {
+        self.scan_params_vec.fill_from_project(project_name);
+        let (all_scans, toward_orig) = project_pc::project_from_dir(project_name);
+        let radius = 0.02;
+        self.build(all_scans, toward_orig, radius);
+    }
 
-    pub fn build(&mut self, pc: &Vec<Vec<Vec<f64>>>, radius: f64) {
-        let mut ptVec: Vec<Pt3> = Vec::new();
-        for i in 0..pc.len() {
-            for j in 0..pc[i].len() {
-                let mut pt = Pt3 {
-                    x: pc[i][j][0],
-                    y: pc[i][j][1],
-                    z: pc[i][j][2],
-                    incompatible_index: Vec::new(),
-                    from_scan: i,
-                };
-                ptVec.push(pt);
+    pub fn build(&mut self, pc: Vec<Vec<Point3>>, orig_vec: Vec<Vec<UnitVec3>>, radius: f64) {
+        for (idx, (scan, towards_orig_scan)) in izip!(pc.iter(), orig_vec.iter()).enumerate() {
+            for (pt, towards_orig) in izip!(scan.iter(), towards_orig_scan.iter()) {
+                let pt_constraint = PtConstraint::new(pt.clone(), idx, towards_orig.clone());
+                self.constrVec.push(pt_constraint);
             }
         }
-        self.ptVec = ptVec;
         self.kdtree.build(&pc);
         self.bvh.build(&pc, radius);
+        self.raw_scans = pc;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn build_geometry_handler() {
+        let mut geo_handler = GeometryHandler::new();
+        geo_handler.build_from_project("corner01");
     }
 }

@@ -1,3 +1,4 @@
+pub mod common_types;
 pub mod file_utils;
 pub mod image_utils;
 pub mod vec;

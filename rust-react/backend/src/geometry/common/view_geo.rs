@@ -33,6 +33,10 @@ impl CameraMatrix {
             inv_K: K.try_inverse().unwrap(),
         }
     }
+    pub fn from_values(fx: f64, fy: f64, cx: f64, cy: f64) -> CameraMatrix {
+        let K = na::Matrix3::new(fx, 0.0, cx, 0.0, fy, cy, 0.0, 0.0, 1.0);
+        CameraMatrix::new(K)
+    }
     pub fn K(&self) -> &na::Matrix3<f64> {
         &self.K
     }

@@ -3,6 +3,8 @@ use crate::geometry::common::view_geo::ImgCoord;
 use lodepng::Bitmap;
 use rgb::{RGB, RGB8};
 
+pub type RawScanImage = Bitmap<RGB<u8>>;
+
 pub fn load_image(path: &str) -> Bitmap<RGB<u8>> {
     println!("Loading image: {}", path);
     match lodepng::decode24_file(path) {

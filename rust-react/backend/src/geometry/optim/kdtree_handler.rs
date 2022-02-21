@@ -1,3 +1,4 @@
+use crate::geometry::common::vec::*;
 use kdtree::distance::squared_euclidean;
 use kdtree::KdTree;
 
@@ -12,10 +13,10 @@ impl PtKdTree {
         }
     }
 
-    pub fn build(&mut self, all_scans: &Vec<Vec<Vec<f64>>>) {
+    pub fn build(&mut self, all_scans: &Vec<Vec<Point3>>) {
         for (i, scan) in all_scans.iter().enumerate() {
             for (j, point) in scan.iter().enumerate() {
-                let pt3 = [point[0], point[1], point[2]];
+                let pt3 = point.as_array();
                 self.kdtree.add(pt3, i * scan.len() + j).unwrap();
             }
         }
@@ -36,25 +37,5 @@ impl PtKdTree {
 mod tests {
     use super::*;
     #[test]
-    fn build_kdtree() {
-        let mut kdtree = PtKdTree::new();
-        let mut pc: Vec<Vec<Vec<f64>>> = Vec::new();
-        // fill pc with points
-        for i in 0..3 {
-            let mut scan: Vec<Vec<f64>> = Vec::new();
-            for j in 0..3 {
-                let mut point: Vec<f64> = Vec::new();
-                point.push(i as f64);
-                point.push(j as f64);
-                point.push(0.0);
-                scan.push(point);
-            }
-            pc.push(scan);
-        }
-        println!("{:?}", pc);
-        kdtree.build(&pc);
-        let mut res = kdtree.within_idx(&vec![0.0, 0.0, 0.0], 1.1);
-        res.sort();
-        assert_eq!(res, vec![0, 1, 3]);
-    }
+    fn build_kdtree() {}
 }

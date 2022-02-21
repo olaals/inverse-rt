@@ -40,7 +40,7 @@ struct PointcloudRequest {
 
 #[derive(Serialize)]
 struct PointcloudRes {
-    pointclouds: Vec<Vec<Vec<f64>>>,
+    pointclouds: Vec<Vec<[f64;3]>>,
 }
 
 #[get("/get-pointcloud")]
