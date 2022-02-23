@@ -19,6 +19,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_project_names)
             .service(get_mesh)
             .service(get_asset)
+            .service(vec_towards_laser_origin)
         //.service(get_mesh)
         //.service(hello)
         //.service(echo)

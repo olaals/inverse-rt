@@ -19,6 +19,15 @@ export class ClickHandler {
     this.last_click = null
   }
 
+  fetchVecTowardsLaserOrig(index) {
+    let url = BACKEND_URL + "/get-vec-towards-laser-origin?index=" + index;
+    return fetch(url).then(response => response.json().then(data => {
+      return data.vector
+    }))
+  }
+
+
+
   listenToClick() {
     console.log("listenToClick")
     subscribe("threeCanvasClick.clickedPos", (state) => {
@@ -42,9 +51,10 @@ export class ClickHandler {
         let index = intersection.index
         let from_scan = this.pc_module.getScanFromIndex(index)
         console.log("from_scan", from_scan)
-        store.dispatch(setIndex({ index: index, from_scan: from_scan, position: [point.x, point.y, point.z] }));
-        console.log("index", index)
-        let pos = [point.x, point.y, point.z]
+        this.fetchVecTowardsLaserOrig(index).then(vec_towards_laser => {
+          console.log("vec_towards_laser", vec_towards_laser)
+          store.dispatch(setIndex({ index: index, from_scan: from_scan, position: [point.x, point.y, point.z], vec_towards_laser: vec_towards_laser }));
+        })
       }
 
 

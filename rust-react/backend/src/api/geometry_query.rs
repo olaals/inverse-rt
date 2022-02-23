@@ -40,3 +40,33 @@ async fn build_and_get_pc(
     let res = build_pointcloud_res(&geo_handler.raw_scans);
     Ok(web::Json(res))
 }
+
+#[derive(Deserialize)]
+struct VectorRequest {
+    index: usize,
+}
+
+#[derive(Serialize)]
+struct VectorRes {
+    vector: [f64; 3],
+}
+
+#[get("/get-vec-towards-laser-origin")]
+async fn vec_towards_laser_origin(
+    req: web::Query<VectorRequest>,
+    appstate: web::Data<AppState>,
+) -> Result<impl Responder> {
+    let mut geo_handler = appstate.geo_handler.lock().unwrap();
+    let vec_towards = geo_handler.get_vec_towards_orig(req.index);
+    match vec_towards {
+        Some(vec) => {
+            let res = VectorRes {
+                vector: vec.as_array(),
+            };
+            Ok(web::Json(res))
+        }
+        None => Err(actix_web::error::ErrorInternalServerError(
+            "No vector found".to_string(),
+        )),
+    }
+}

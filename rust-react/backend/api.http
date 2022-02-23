@@ -20,3 +20,5 @@ GET http://127.0.0.1:5000/get-camera-poses?project=corner01
 GET http://127.0.0.1:5000/get-laser-poses?project=corner01
 ###
 GET http://127.0.0.1:5000/get-cam-laser-poses?project=corner01
+###
+GET http://127.0.0.1:5000/get-vec-towards-laser-origin?index=70000

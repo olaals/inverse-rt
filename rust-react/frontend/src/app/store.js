@@ -9,6 +9,7 @@ import settingsReducer from '../features/settingsSlice'
 import displayReducer from '../features/displaySlice'
 import threeCanvasClickSlice from '../features/threeCanvasClickSlice';
 import selectPointSlice from '../features/selectPointSlice';
+import pointDebugSlice from '../features/pointDebugSlice';
 
 const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ const store = configureStore({
     "display": displayReducer,
     "threeCanvasClick": threeCanvasClickSlice,
     "selectPoint": selectPointSlice,
+    "pointDebug": pointDebugSlice,
   },
 })
 

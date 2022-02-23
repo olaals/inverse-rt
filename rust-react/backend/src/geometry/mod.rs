@@ -3,6 +3,7 @@ pub mod constraint_vec;
 pub mod normal_est;
 pub mod optim;
 pub mod project_pc;
+use actix_web::http::Error;
 use common::common_types::*;
 use common::vec::*;
 use constraint_vec::*;
@@ -13,7 +14,7 @@ use optim::kdtree_handler::PtKdTree;
 pub struct GeometryHandler {
     pub kdtree: PtKdTree,
     pub bvh: SphereBvh,
-    pub constrVec: ConstraintVec,
+    pub constr_vec: ConstraintVec,
     pub raw_scans: Vec<Vec<Point3>>,
     pub scan_params_vec: ScanParamsVec,
 }
@@ -23,7 +24,7 @@ impl GeometryHandler {
         GeometryHandler {
             kdtree: PtKdTree::new(),
             bvh: SphereBvh::new(),
-            constrVec: ConstraintVec::new(),
+            constr_vec: ConstraintVec::new(),
             raw_scans: Vec::new(),
             scan_params_vec: ScanParamsVec::new(),
         }
@@ -39,12 +40,17 @@ impl GeometryHandler {
         for (idx, (scan, towards_orig_scan)) in izip!(pc.iter(), orig_vec.iter()).enumerate() {
             for (pt, towards_orig) in izip!(scan.iter(), towards_orig_scan.iter()) {
                 let pt_constraint = PtConstraint::new(pt.clone(), idx, towards_orig.clone());
-                self.constrVec.push(pt_constraint);
+                self.constr_vec.push(pt_constraint);
             }
         }
         self.kdtree.build(&pc);
         self.bvh.build(&pc, radius);
         self.raw_scans = pc;
+    }
+
+    pub fn get_vec_towards_orig(&self, idx: usize) -> Option<UnitVec3> {
+        let pt_constraint = &self.constr_vec.vec.get(idx)?;
+        return Some(pt_constraint.towards_origin.clone());
     }
 }
 

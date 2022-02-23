@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   index: null,
   from_scan: null,
-  position: null
+  position: null,
+  vec_towards_laser: null,
 }
 
 const selectPointSlice = createSlice({
@@ -14,6 +15,7 @@ const selectPointSlice = createSlice({
       state.index = action.payload.index
       state.from_scan = action.payload.from_scan
       state.position = action.payload.position
+      state.vec_towards_laser = action.payload.vec_towards_laser
 
     }
   }
