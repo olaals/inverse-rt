@@ -11,6 +11,7 @@ async fn main() -> std::io::Result<()> {
     let app_state = web::Data::new(AppState::new());
     HttpServer::new(move || {
         let cors = Cors::permissive();
+        println!("Starting server");
         App::new()
             .app_data(app_state.clone())
             .wrap(cors)

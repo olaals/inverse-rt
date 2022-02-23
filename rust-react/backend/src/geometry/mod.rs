@@ -8,6 +8,7 @@ use common::common_types::*;
 use common::vec::*;
 use constraint_vec::*;
 use itertools::izip;
+use normal_est::*;
 use optim::bvh_handler::SphereBvh;
 use optim::kdtree_handler::PtKdTree;
 
@@ -46,6 +47,10 @@ impl GeometryHandler {
         self.kdtree.build(&pc);
         self.bvh.build(&pc, radius);
         self.raw_scans = pc;
+    }
+
+    pub fn estimate_normals(&mut self) {
+        estimate_normals(&mut self.constr_vec, &self.kdtree);
     }
 
     pub fn get_vec_towards_orig(&self, idx: usize) -> Option<UnitVec3> {

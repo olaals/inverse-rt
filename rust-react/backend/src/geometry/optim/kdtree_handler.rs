@@ -22,8 +22,8 @@ impl PtKdTree {
         }
     }
 
-    pub fn within_idx(&self, point: &Vec<f64>, distance: f64) -> Vec<usize> {
-        let pt_arr = [point[0], point[1], point[2]];
+    pub fn within_idx(&self, point: &Point3, distance: f64) -> Vec<usize> {
+        let pt_arr = point.as_array();
         let res = self
             .kdtree
             .within(&pt_arr, distance, &squared_euclidean)

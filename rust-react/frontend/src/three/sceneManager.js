@@ -8,6 +8,7 @@ import { PointcloudModule } from './pointcloudModule';
 import { CameraLaserModule } from './cameraLaserModule';
 import { SceneSettingsModule } from './sceneSettingsModule';
 import { ClickHandler } from './clickHandler';
+import { VecTowardsLaserOrigModule } from './vecTowardsLaserOrigModule';
 
 
 export class SceneManager {
@@ -22,10 +23,11 @@ export class SceneManager {
 
   initSceneModules(scene) {
     this.meshModule = new MeshModule(scene)
-    this.pointcloudModule = new PointcloudModule(scene)
-    this.cameraLaserModule = new CameraLaserModule(scene)
-    this.sceneSettingsModule = new SceneSettingsModule(scene)
-    this.clickHandler = new ClickHandler(scene, this.camera, this.pointcloudModule)
+    this.pointcloudModule = new PointcloudModule(scene);
+    this.cameraLaserModule = new CameraLaserModule(scene);
+    this.sceneSettingsModule = new SceneSettingsModule(scene);
+    this.clickHandler = new ClickHandler(scene, this.camera, this.pointcloudModule);
+    this.vecTowardsLaserOrigModule = new VecTowardsLaserOrigModule(scene);
   }
 
   getScene() {

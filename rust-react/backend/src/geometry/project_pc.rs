@@ -73,11 +73,11 @@ fn calculate_vec_towards_origin(
     params_vec: &Vec<ProjectionParams>,
 ) -> Vec<Vec<UnitVec3>> {
     let mut ret_vec: Vec<Vec<UnitVec3>> = Vec::new();
-    for scan_vec in world_points.iter() {
+    for (idx, scan_vec) in world_points.iter().enumerate() {
         let mut ret_scan_vec: Vec<UnitVec3> = Vec::new();
         for point in scan_vec.iter() {
-            let T_wc = &params_vec[0].T_wc;
-            let T_cl = &params_vec[0].T_cl;
+            let T_wc = &params_vec[idx].T_wc;
+            let T_cl = &params_vec[idx].T_cl;
             let T_wl = T_wc.transform_SE3(&T_cl);
             let (_, laser_origin) = T_wl.decompose();
             let vec_from_point_to_origin = &Point3::from_vec(&laser_origin) - point;

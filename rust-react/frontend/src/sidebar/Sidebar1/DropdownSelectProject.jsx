@@ -8,14 +8,15 @@ let fetchProjectNames = async () => {
     let response = await fetch("http://127.0.0.1:5000/get-project-names", {
         method: "GET",
         headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*"
+            "Content-Type": "application/json"
         }
     })
+
     // handle failed request
     if (!response.ok) {
         throw new Error(response.statusText)
     }
+    console.log("fetchProjectNames response: ", response)
 
     let data = await response.json()
     return data.project_names

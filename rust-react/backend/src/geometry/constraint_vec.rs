@@ -9,6 +9,7 @@ pub struct PtConstraint {
     //est normals:
     pub laser_constraints: Vec<usize>,
     pub camera_constraints: Vec<usize>,
+    pub normals: Vec<UnitVec3>,
 }
 impl PtConstraint {
     pub fn new(pt: Point3, from_scan: usize, towards_origin: UnitVec3) -> PtConstraint {
@@ -19,6 +20,7 @@ impl PtConstraint {
             towards_origin: towards_origin,
             laser_constraints: Vec::new(),
             camera_constraints: Vec::new(),
+            normals: Vec::new(),
         }
     }
 }

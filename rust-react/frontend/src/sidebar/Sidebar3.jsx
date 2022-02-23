@@ -9,7 +9,7 @@ import ShowVecTowardsLaser from './Sidebar3/ShowVecTowardsLaser'
 const Sidebar3 = () => {
     return (
         <div>
-            <h1>Sidebar3</h1>
+            <h1>Point Select</h1>
             <PointIndexDisplay />
             <ScanIndexDisplay />
             <PointPosDisplay />

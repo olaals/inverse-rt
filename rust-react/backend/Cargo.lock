@@ -403,6 +403,7 @@ dependencies = [
  "nalgebra",
  "ndarray",
  "ndarray-npy",
+ "rand 0.8.5",
  "rayon",
  "rgb",
  "serde",
