@@ -3,12 +3,15 @@ import SidebarDropdown from '../components/SidebarDropdown'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setSelectedProject } from '../../features/selectedProjectSlice'
+import { BACKEND_URL } from '../../app/store'
 
 let fetchProjectNames = async () => {
-    let response = await fetch("http://127.0.0.1:5000/get-project-names", {
+    console.log("fetchProjectNames")
+    let response = await fetch(BACKEND_URL + "/get-project-names", {
         method: "GET",
         headers: {
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*"
         }
     })
 

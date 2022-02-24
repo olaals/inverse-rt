@@ -35,16 +35,22 @@ impl GeometryHandler {
         let (all_scans, toward_orig) = project_pc::project_from_dir(project_name);
         let radius = 0.02;
         self.build(all_scans, toward_orig, radius);
+        println!("estimate normals");
+        estimate_normals(&mut self.constr_vec, &self.kdtree);
+        println!("estimate normals done");
     }
 
     pub fn build(&mut self, pc: Vec<Vec<Point3>>, orig_vec: Vec<Vec<UnitVec3>>, radius: f64) {
+        println!("building constraint vec");
         for (idx, (scan, towards_orig_scan)) in izip!(pc.iter(), orig_vec.iter()).enumerate() {
             for (pt, towards_orig) in izip!(scan.iter(), towards_orig_scan.iter()) {
                 let pt_constraint = PtConstraint::new(pt.clone(), idx, towards_orig.clone());
                 self.constr_vec.push(pt_constraint);
             }
         }
+        println!("building kdtree");
         self.kdtree.build(&pc);
+        println!("building bvh");
         self.bvh.build(&pc, radius);
         self.raw_scans = pc;
     }
@@ -56,6 +62,10 @@ impl GeometryHandler {
     pub fn get_vec_towards_orig(&self, idx: usize) -> Option<UnitVec3> {
         let pt_constraint = &self.constr_vec.vec.get(idx)?;
         return Some(pt_constraint.towards_origin.clone());
+    }
+
+    pub fn get_pt_constr_from_index(&self, idx: usize) -> Option<&PtConstraint> {
+        return self.constr_vec.vec.get(idx);
     }
 }
 

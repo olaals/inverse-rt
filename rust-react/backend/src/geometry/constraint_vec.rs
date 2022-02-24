@@ -1,6 +1,22 @@
 use crate::geometry::common::vec::*;
 
 #[derive(Debug)]
+pub struct NormalVec {
+    pub same_scan_idx: usize,
+    pub other_scan_idx: usize,
+    pub vec: UnitVec3,
+}
+impl NormalVec {
+    pub fn new(same_scan_idx: usize, other_scan_idx: usize, normal_vec: UnitVec3) -> NormalVec {
+        NormalVec {
+            same_scan_idx,
+            other_scan_idx,
+            vec: normal_vec,
+        }
+    }
+}
+
+#[derive(Debug)]
 pub struct PtConstraint {
     pub pt: Point3,
     pub from_scan: usize,
@@ -9,7 +25,7 @@ pub struct PtConstraint {
     //est normals:
     pub laser_constraints: Vec<usize>,
     pub camera_constraints: Vec<usize>,
-    pub normals: Vec<UnitVec3>,
+    pub normals: Vec<NormalVec>,
 }
 impl PtConstraint {
     pub fn new(pt: Point3, from_scan: usize, towards_origin: UnitVec3) -> PtConstraint {

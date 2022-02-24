@@ -152,6 +152,6 @@ mod tests {
         println!("point_C: {:?}", point);
         let point_W = T_wc.transform_point(&point);
         println!("point_W: {:?}", point_W);
-        assert_eq!(point_W.x(), 3.0);
+        assert_eq!(point_W.x(), 3.1462009682194445);
     }
 }

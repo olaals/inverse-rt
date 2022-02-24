@@ -15,6 +15,7 @@ struct ProjectListRes {
 
 #[get("/get-project-names")]
 pub async fn get_project_names() -> Result<impl Responder> {
+    println!("get_project_names");
     let project_names = list_files_in_dir("scan-projects");
     let res = ProjectListRes {
         project_names: project_names,
