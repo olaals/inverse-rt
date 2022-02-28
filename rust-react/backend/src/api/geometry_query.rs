@@ -74,24 +74,10 @@ async fn vec_towards_laser_origin(
 #[derive(Serialize)]
 struct EstNormalsRes {
     normals: Vec<[f64; 3]>,
-    same_idx: Vec<usize>,
+    same_pts: Vec<[f64; 3]>,
+    other_pts: Vec<[f64; 3]>,
     other_idx: Vec<usize>,
-}
-
-fn create_est_normals_res(normals: &Vec<NormalVec>) -> EstNormalsRes {
-    let mut normals_vec: Vec<[f64; 3]> = Vec::new();
-    let mut same_idx: Vec<usize> = Vec::new();
-    let mut other_idx: Vec<usize> = Vec::new();
-    for normal_vec in normals {
-        normals_vec.push(normal_vec.vec.as_array());
-        same_idx.push(normal_vec.same_scan_idx);
-        other_idx.push(normal_vec.other_scan_idx);
-    }
-    return EstNormalsRes {
-        normals: normals_vec,
-        same_idx: same_idx,
-        other_idx: other_idx,
-    };
+    same_idx: Vec<usize>,
 }
 
 #[get("/get-estimated-normals")]
@@ -99,11 +85,43 @@ async fn get_estimated_normals(
     req: web::Query<VectorRequest>,
     appstate: web::Data<AppState>,
 ) -> Result<impl Responder> {
-    let mut geo_handler = appstate.geo_handler.lock().unwrap();
+    let geo_handler = appstate.geo_handler.lock().unwrap();
     let pt_constr = geo_handler.get_pt_constr_from_index(req.index);
+    let mut normals_vec: Vec<[f64; 3]> = Vec::new();
+    let mut same_pts: Vec<[f64; 3]> = Vec::new();
+    let mut other_pts: Vec<[f64; 3]> = Vec::new();
+    let mut other_idx: Vec<usize> = Vec::new();
+    let mut same_idx: Vec<usize> = Vec::new();
     match pt_constr {
         Some(pt_constr) => {
-            let res = create_est_normals_res(&pt_constr.normals);
+            //let res = create_est_normals_res(&pt_constr.normals);
+            for normal_vec in &pt_constr.normals {
+                let same_scan_idx = normal_vec.same_scan_idx;
+                let other_scan_idx = normal_vec.other_scan_idx;
+                let same_pt = geo_handler
+                    .get_pt_constr_from_index(same_scan_idx)
+                    .unwrap()
+                    .pt
+                    .as_array();
+                let other_pt = geo_handler
+                    .get_pt_constr_from_index(other_scan_idx)
+                    .unwrap()
+                    .pt
+                    .as_array();
+                normals_vec.push(normal_vec.vec.as_array());
+                same_pts.push(same_pt);
+                other_pts.push(other_pt);
+                same_idx.push(same_scan_idx);
+                other_idx.push(other_scan_idx);
+            }
+            let res = EstNormalsRes {
+                normals: normals_vec,
+                same_pts: same_pts,
+                other_pts: other_pts,
+                other_idx: other_idx,
+                same_idx: same_idx,
+            };
+
             Ok(web::Json(res))
         }
         None => Err(actix_web::error::ErrorInternalServerError(

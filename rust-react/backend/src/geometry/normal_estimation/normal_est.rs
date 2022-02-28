@@ -76,16 +76,28 @@ fn sample_point_normals(
         let (sampled_same, same_idx) = &from_same_scan[rng.gen_range(0..len_same)];
         let (sampled_other, other_idx) = &from_other_scan[rng.gen_range(0..len_other)];
         let first_vec = &first_pt_constr.pt - &sampled_same;
-        let second_vec = &first_pt_constr.pt - &sampled_other;
-        let mut cross = first_vec.cross(&second_vec);
-        let dot_prod = cross.dot_unit(&first_pt_constr.towards_origin);
-        if (dot_prod < 0.0) {
-            cross = cross.negate();
-        }
-        let unit_normal = cross.as_unit_vec();
-        let normal_vec = NormalVec::new(*same_idx, *other_idx, unit_normal);
+        let normal_vec = cross_to_normal(&first_pt_constr, &sampled_same, &sampled_other);
         ret_vec.push(normal_vec);
         //first_pt_constr.normals.push(unit_normal);
     }
     return ret_vec;
+}
+
+fn cross_to_normal(
+    orig_pt_constr: &PtConstraint,
+    sampled_same: &Point3,
+    sampled_other: &Point3,
+) -> NormalVec {
+    let origin_pt = &orig_pt_constr.pt;
+    let towards_orig = &orig_pt_constr.towards_origin;
+    let first_vec = origin_pt - sampled_same;
+    let second_vec = origin_pt - sampled_other;
+    let mut cross = first_vec.cross(&second_vec);
+    let dot_prod = cross.dot_unit(towards_orig);
+    if dot_prod < 0.0 {
+        cross = cross.negate();
+    }
+    let unit_normal = cross.as_unit_vec();
+    let normal_vec = NormalVec::new(0, 0, unit_normal);
+    return normal_vec;
 }

@@ -14,7 +14,7 @@ const QuerySurfaceNormals = () => {
     }
 
     return (
-        <SidebarCheckbox description={"Show surface normals"} checked={show_surface_normals} onChange={onChange} />
+        <SidebarCheckbox description={"Show all surface normals"} checked={show_surface_normals} onChange={onChange} />
     )
 }
 

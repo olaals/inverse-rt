@@ -10,6 +10,7 @@ import { SceneSettingsModule } from './sceneSettingsModule';
 import { ClickHandler } from './clickHandler';
 import { VecTowardsLaserOrigModule } from './vecTowardsLaserOrigModule';
 import { SurfaceNormalModule } from './surfaceNormalModule';
+import { IndSurfaceNormalModule } from './indSurfaceNormalModule';
 
 
 export class SceneManager {
@@ -30,6 +31,7 @@ export class SceneManager {
     this.clickHandler = new ClickHandler(scene, this.camera, this.pointcloudModule);
     this.vecTowardsLaserOrigModule = new VecTowardsLaserOrigModule(scene);
     this.normalModule = new SurfaceNormalModule(scene);
+    this.indNormalModule = new IndSurfaceNormalModule(scene);
   }
 
   getScene() {

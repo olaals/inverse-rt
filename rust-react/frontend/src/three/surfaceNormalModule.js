@@ -40,6 +40,22 @@ export class SurfaceNormalModule {
         })
       }
     })
+
+    subscribe('pointDebug.show_surface_normals', (state) => {
+      this.active_displayed.forEach(element => {
+        this.scene.remove(element);
+      });
+      console.log("subscribe show surface normal from toggle", state.pointDebug.show_surface_normals)
+      let show_pointcloud = state.pointDebug.show_surface_normals;
+      let index = state.selectPoint.index;
+      let pt_pos = state.selectPoint.position;
+      console.log("subscribe surf norm show_pointcloud", show_pointcloud)
+      if (show_pointcloud && index) {
+        this.fetch_normals(index).then((normals) => {
+          this.draw_normals(normals, pt_pos)
+        })
+      }
+    })
   }
 
 
