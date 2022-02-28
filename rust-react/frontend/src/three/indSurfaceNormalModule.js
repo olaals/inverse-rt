@@ -1,7 +1,8 @@
 
 import * as THREE from 'three';
 import { store, subscribe, BACKEND_URL } from '../app/store';
-import { setNumSurfaceNormals, setSelectedSurfaceNormal, setNormalsSameAndOtherPts } from '../features/pointDebugSlice';
+import { setNumSurfaceNormals, setSelectedSurfaceNormal, setNormalsSameAndOtherPts, setSameOtherNormalIdx } from '../features/pointDebugSlice';
+import { setSameAndOtherIdx } from '../features/selectNormalSlice';
 
 
 export class IndSurfaceNormalModule {
@@ -23,11 +24,6 @@ export class IndSurfaceNormalModule {
     console.log("fetch_normals len", len);
     console.assert(this.normals < 21);
 
-
-    this.normals = data.normals;
-    this.same_pts = data.same_pts;
-    this.other_pts = data.other_pts;
-
     store.dispatch(setNormalsSameAndOtherPts(data));
     console.log("fetch_normals", this.normals, this.same_pts, this.other_pts)
     store.dispatch(setNumSurfaceNormals(len - 1));
@@ -42,15 +38,59 @@ export class IndSurfaceNormalModule {
     });
   }
 
+  async fetch_from_to(from_idx, to_idx) {
+    let res = await fetch(BACKEND_URL + '/get-vector-from-to?from_index=' + from_idx + '&to_index=' + to_idx);
+    let data = await res.json();
+    let vector = data.vector;
+    return vector;
+  }
+
+  async fetch_point(index) {
+    let res = await fetch(BACKEND_URL + '/get-point?index=' + index);
+    let data = await res.json();
+    let point = data.point;
+    return point;
+  }
+
+
+  async draw_vector_from_to(from_idx, to_idx) {
+    let vector = await this.fetch_from_to(from_idx, to_idx);
+    let this_pt = await this.fetch_point(from_idx);
+    console.log("draw_vector_from_to", vector)
+    let arr_help = this.getArrowHelperTrueLen(vector, this_pt, 0x00ffff);
+    this.active_displayed.push(arr_help);
+    this.scene.add(arr_help);
+  }
+
+  async drawSphereAt(idx) {
+    let point = await this.fetch_point(idx);
+    let radius = store.getState().settings.selectSphereRadius;
+    let geometry = new THREE.SphereGeometry(radius, 32, 32);
+    let material = new THREE.MeshBasicMaterial({ color: 0x00ffff });
+    let sphere = new THREE.Mesh(geometry, material);
+    sphere.position.set(point[0], point[1], point[2]);
+    this.active_displayed.push(sphere);
+    this.scene.add(sphere);
+  }
+
+
+  async dispatchIndex(same_idx, other_idx) {
+    setTimeout(() => {
+      store.dispatch(setSameOtherNormalIdx({ same_idx: same_idx, other_idx: other_idx }));
+    }, 10);
+  }
+
+
+
+
+
 
   subscribe_to_normals() {
     subscribe('selectPoint.index', (state) => {
       this.removeActiveDisplayed();
-      console.log("subscribe surf norm selectPoint.index", state.selectPoint.index)
       let show_pointcloud = state.pointDebug.show_ind_surface_normals;
       let index = state.selectPoint.index;
       this.pt_pos = state.selectPoint.position;
-      console.log("subscribe surf norm show_pointcloud", show_pointcloud, this.pt_pos)
       this.fetch_normals(index);
     })
 
@@ -64,34 +104,24 @@ export class IndSurfaceNormalModule {
       if (!show_normals) {
         return;
       }
-      console.log("subscribe surf norm selected_surface_normal", selected_surface_normal)
-      let normal = this.normals[selected_surface_normal];
-      let same_pt = this.same_pts[selected_surface_normal];
-      let other_pt = this.other_pts[selected_surface_normal];
-      console.log("normals in state", this.normals)
-      console.log("active displated", this.active_displayed)
-      console.log("same pts state", this.same_pts)
-      console.log("other pts state", this.other_pts)
+      let this_index = state.selectPoint.index;
+      let normal = state.pointDebug.normals[selected_surface_normal];
+      let same_idx = state.pointDebug.same_idx[selected_surface_normal];
+      let other_idx = state.pointDebug.other_idx[selected_surface_normal];
+      this.dispatchIndex(same_idx, other_idx);
+      this.drawSphereAt(other_idx);
+      this.drawSphereAt(same_idx);
 
-      console.log("subscribe surf norm same_pt", same_pt, normal, other_pt)
       let normal_arr_help = this.getArrowHelper(normal, this.pt_pos);
-      let same_pt_arr_help = this.getArrowHelperFromTo(this.pt_pos, same_pt);
-      let other_pt_arr_help = this.getArrowHelperFromTo(this.pt_pos, other_pt);
-      this.active_displayed.push(other_pt_arr_help);
-      this.active_displayed.push(same_pt_arr_help);
       this.active_displayed.push(normal_arr_help);
       this.scene.add(normal_arr_help);
-      this.scene.add(same_pt_arr_help);
-      this.scene.add(other_pt_arr_help);
     })
 
     subscribe('pointDebug.show_ind_surface_normals', (state) => {
       this.removeActiveDisplayed();
-      console.log("subscribe show surface normal from toggle", state.pointDebug.show_ind_surface_normals)
       let show_pointcloud = state.pointDebug.show_ind_surface_normals;
       let index = state.selectPoint.index;
       let pt_pos = state.selectPoint.position;
-      console.log("subscribe surf norm show_pointcloud", show_pointcloud)
     })
   }
 
@@ -120,4 +150,23 @@ export class IndSurfaceNormalModule {
     const arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
     return arrowHelper;
   }
+
+  getArrowHelperTrueLen(vec, origin_pt, hex_color) {
+    const dir = new THREE.Vector3(vec[0], vec[1], vec[2]);
+    const origin = new THREE.Vector3(origin_pt[0], origin_pt[1], origin_pt[2]);
+    const length = dir.length();
+    const hex = hex_color;
+    const arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
+    return arrowHelper;
+  }
+
+  createSphereAt(pos, radius) {
+    let geometry = new THREE.SphereGeometry(radius, 32, 32);
+    let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    let sphere = new THREE.Mesh(geometry, material);
+    sphere.position.set(pos[0], pos[1], pos[2]);
+    return sphere;
+  }
+
+
 }

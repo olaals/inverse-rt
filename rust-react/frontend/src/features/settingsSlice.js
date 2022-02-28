@@ -4,6 +4,7 @@ const initialState = {
   meshOpacity: 100,
   sceneBackgroundColor: '#ffffff',
   pointcloudSize: 500,
+  selectSphereRadius: 0.001,
 };
 
 const settingsSlice = createSlice({
@@ -18,6 +19,9 @@ const settingsSlice = createSlice({
     },
     setPointcloudSize(state, action) {
       state.pointcloudSize = action.payload;
+    },
+    setSelectSphereRadius(state, action) {
+      state.selectSphereRadius = action.payload;
     }
   },
 });
@@ -26,6 +30,7 @@ export const {
   setMeshOpacity,
   setSceneBackgroundColor,
   setPointcloudSize,
+  setSelectSphereRadius,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

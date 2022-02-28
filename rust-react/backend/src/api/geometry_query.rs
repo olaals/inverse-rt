@@ -129,3 +129,71 @@ async fn get_estimated_normals(
         )),
     }
 }
+
+#[derive(Deserialize)]
+struct PointReq {
+    index: usize,
+}
+
+#[derive(Serialize)]
+struct PointRes {
+    point: [f64; 3],
+    from_scan: usize,
+}
+
+#[get("/get-point")]
+async fn get_point(
+    req: web::Query<PointReq>,
+    appstate: web::Data<AppState>,
+) -> Result<impl Responder> {
+    let geo_handler = appstate.geo_handler.lock().unwrap();
+    let pt_constr = geo_handler.get_pt_constr_from_index(req.index);
+    match pt_constr {
+        Some(pt_constr) => {
+            let res = PointRes {
+                point: pt_constr.pt.as_array(),
+                from_scan: pt_constr.from_scan,
+            };
+            Ok(web::Json(res))
+        }
+        None => Err(actix_web::error::ErrorInternalServerError(
+            "No point constraint found".to_string(),
+        )),
+    }
+}
+
+#[derive(Deserialize)]
+struct VectorFromToReq {
+    from_index: usize,
+    to_index: usize,
+}
+
+#[derive(Serialize)]
+struct VectorFromToRes {
+    vector: [f64; 3],
+}
+
+#[get("/get-vector-from-to")]
+async fn get_vector_from_to(
+    req: web::Query<VectorFromToReq>,
+    appstate: web::Data<AppState>,
+) -> Result<impl Responder> {
+    let geo_handler = appstate.geo_handler.lock().unwrap();
+    let from_pt_constr = geo_handler.get_pt_constr_from_index(req.from_index);
+    let to_pt_constr = geo_handler.get_pt_constr_from_index(req.to_index);
+    match (from_pt_constr, to_pt_constr) {
+        (Some(from_pt_constr), Some(to_pt_constr)) => {
+            let pt_from = &from_pt_constr.pt;
+            let pt_to = &to_pt_constr.pt;
+            let vec = pt_to.subtract(pt_from);
+            let res = VectorFromToRes {
+                vector: vec.as_array(),
+            };
+
+            Ok(web::Json(res))
+        }
+        _ => Err(actix_web::error::ErrorInternalServerError(
+            "No point constraint found".to_string(),
+        )),
+    }
+}

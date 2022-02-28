@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { store, subscribe, BACKEND_URL } from '../app/store';
 import { onLoadPointcloud } from '../features/selectedProjectSlice';
+import { setPointcloud } from '../features/pointcloudSlice';
 import { listsToMatrix4, createBufferGeo } from './threeUtils';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
@@ -99,8 +100,6 @@ export class PointcloudModule {
         this.cumul_scan_lengths.push(cumul_scan_lengths)
 
       })
-      console.log("flattened pointclouds", flattend_pointclouds)
-      console.log("cumul scan lengths", this.cumul_scan_lengths)
 
       let pc_geo = createBufferGeo(flattend_pointclouds, 0xFF0000, 0.001);
       this.pointcloud = pc_geo;
@@ -108,7 +107,6 @@ export class PointcloudModule {
     }
 
     subscribe("selectedProject.projectName", state => {
-      console.log("fetchPointcloud")
       let projectName = state.selectedProject.projectName
       fetch_req(projectName)
     })

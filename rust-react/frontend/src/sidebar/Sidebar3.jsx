@@ -1,6 +1,8 @@
 import React from 'react'
 import InconsistentPoints from './Sidebar3/InconsistentPoints'
 import IndSurfaceNormals from './Sidebar3/IndSurfaceNormals'
+import NormalOtherIdxDisp from './Sidebar3/NormalOtherIdxDisp'
+import NormalSameIdxDisp from './Sidebar3/NormalSameIdxDisp'
 import PointIndexDisplay from './Sidebar3/PointIndexDisplay'
 import PointPosDisplay from './Sidebar3/PointPosDisplay'
 import QuerySurfaceNormals from './Sidebar3/QuerySurfaceNormals'
@@ -20,6 +22,8 @@ const Sidebar3 = () => {
             <QuerySurfaceNormals />
             <IndSurfaceNormals />
             <SelectIndSurfaceNormal />
+            <NormalSameIdxDisp />
+            <NormalOtherIdxDisp />
 
         </div>
     )

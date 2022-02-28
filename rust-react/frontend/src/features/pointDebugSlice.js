@@ -6,6 +6,8 @@ const initialState = {
   show_ind_surface_normals: false,
   num_surface_normals: 0,
   selected_surface_normal: -1,
+  selected_other_idx: null,
+  selected_same_idx: null,
   normals: [],
   same_pts: [],
   other_pts: [],
@@ -40,6 +42,10 @@ const pointDebugSlice = createSlice({
       state.other_pts = action.payload.other_pts;
       state.same_idx = action.payload.same_idx;
       state.other_idx = action.payload.other_idx;
+    },
+    setSameOtherNormalIdx(state, action) {
+      state.selected_same_idx = action.payload.same_idx;
+      state.selected_other_idx = action.payload.other_idx;
     }
 
   }
@@ -52,6 +58,7 @@ export const {
   setNumSurfaceNormals,
   setSelectedSurfaceNormal,
   setNormalsSameAndOtherPts,
+  setSameOtherNormalIdx,
 } = pointDebugSlice.actions
 
 export default pointDebugSlice.reducer

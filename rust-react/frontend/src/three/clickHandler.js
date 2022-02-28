@@ -26,6 +26,12 @@ export class ClickHandler {
     }))
   }
 
+  async fetch_point(index) {
+    let res = await fetch(BACKEND_URL + '/get-point?index=' + index);
+    let data = await res.json();
+    let point = data.point;
+    return point;
+  }
 
 
   listenToClick() {
@@ -46,14 +52,17 @@ export class ClickHandler {
       const intersection = (intersections.length) > 0 ? intersections[0] : null;
       console.log(intersection)
       if (intersection) {
-        this.createSphereAtClick(intersection.point)
-        let point = intersection.point
+        //this.createSphereAtClick(intersection.point)
+        //let point = intersection.point
         let index = intersection.index
-        let from_scan = this.pc_module.getScanFromIndex(index)
-        console.log("from_scan", from_scan)
-        this.fetchVecTowardsLaserOrig(index).then(vec_towards_laser => {
-          console.log("vec_towards_laser", vec_towards_laser)
-          store.dispatch(setIndex({ index: index, from_scan: from_scan, position: [point.x, point.y, point.z], vec_towards_laser: vec_towards_laser }));
+        this.fetch_point(index).then(point => {
+          let from_scan = this.pc_module.getScanFromIndex(index)
+          this.createSphereAtClick(point)
+          console.log("from_scan", from_scan)
+          this.fetchVecTowardsLaserOrig(index).then(vec_towards_laser => {
+            console.log("vec_towards_laser", vec_towards_laser)
+            store.dispatch(setIndex({ index: index, from_scan: from_scan, position: point, vec_towards_laser: vec_towards_laser }));
+          })
         })
       }
 
@@ -79,8 +88,10 @@ export class ClickHandler {
     // if interscetion is not null
     console.log("intersection")
     if (intersection) {
-      this.createSphereAtClick(intersection.point)
-      console.log(intersection.index)
+      this.fetch_point(intersection.index).then(point => {
+        console.log("point create sphere at click", point)
+        this.createSphereAtClick(point)
+      })
     }
   }
 
@@ -90,7 +101,8 @@ export class ClickHandler {
 
   createSphereAtClick(pos) {
     this.removeSphere()
-    let geometry = new THREE.SphereGeometry(0.002, 32, 32);
+    let radius = store.getState().settings.selectSphereRadius;
+    let geometry = new THREE.SphereGeometry(radius, 32, 32);
     // semi transparent sphere
     let material = new THREE.MeshBasicMaterial({
       color: 0xffff00,
@@ -98,7 +110,7 @@ export class ClickHandler {
       opacity: 0.8
     });
     let sphere = new THREE.Mesh(geometry, material);
-    sphere.position.set(pos.x, pos.y, pos.z);
+    sphere.position.set(pos[0], pos[1], pos[2]);
     this.selected = sphere
     this.scene.add(sphere);
   }

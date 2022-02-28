@@ -24,3 +24,7 @@ GET http://127.0.0.1:5000/get-cam-laser-poses?project=corner01
 GET http://127.0.0.1:5000/get-vec-towards-laser-origin?index=0
 ###
 GET http://127.0.0.1:5000/get-estimated-normals?index=60001
+####
+GET http://127.0.0.1:5000/get-point?index=23440
+###
+GET http://127.0.0.1:5000/get-vector-from-to?from_index=0&to_index=1569

@@ -30,6 +30,13 @@ impl Point3 {
     pub fn clone(&self) -> Point3 {
         Point3::new(self.x(), self.y(), self.z())
     }
+    pub fn subtract(&self, other: &Point3) -> Vec3 {
+        Vec3::new(
+            self.x() - other.x(),
+            self.y() - other.y(),
+            self.z() - other.z(),
+        )
+    }
 }
 impl ops::Sub for &Point3 {
     type Output = Vec3;

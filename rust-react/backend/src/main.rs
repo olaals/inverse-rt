@@ -28,6 +28,8 @@ async fn main() -> std::io::Result<()> {
             .service(get_asset)
             .service(vec_towards_laser_origin)
             .service(get_estimated_normals)
+            .service(get_point)
+            .service(get_vector_from_to)
         //.service(get_mesh)
         //.service(hello)
         //.service(echo)
