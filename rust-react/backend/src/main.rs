@@ -41,7 +41,7 @@ async fn main() -> std::io::Result<()> {
         //.service(get_camera_laser_poses)
         //.route("/arg", web::get().to(get_arg))
     })
-    .workers(1)
+    .workers(4)
     .bind("127.0.0.1:5000")?
     .run()
     .await
